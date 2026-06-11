@@ -18,35 +18,45 @@
 
 ---
 
-### 🔍 SME Feedback from the Break Through Tech Evaluation Team
+## 📋 BTT Internal Evaluation Notes
+*(This section is for BTT staff only — remove before sharing with students)*
 
-*Challenge Advisor: Please address the following feedback by editing this page. Your AI Studio Coach can help make project adjustments as needed, too. In addition to the grey section above, this section should be removed before sharing the repo with your student team.*
+| Check | Status | Notes |
+|-------|--------|-------|
+| Python Compatibility | 🟡 | While the tech stack predominantly uses Python (for unsupervised learning and data analysis), reliance on Azure for implementation raises concerns over Python compatibility, especially with access for all students. |
+| Data Readiness | 🔴 | The project relies on multiple datasets, with one (StarScout) being labeled but estimates indicate a total size of over 10GB, causing immediate risks related to data accessibility and usability. Students may need significant time to clean and manage data, resulting in an inefficient workflow. |
+| Resource Check | 🟡 | Free-tier tools like Google Colab are accessible, but reliance on potential Azure services limits equity among all students, as some might not have access to those external resources without extra support. |
+
+**Student Fit Score:** 5/10  
+**Technical Depth Score:** 7/10  
+**Overall Recommendation:** REVISE
+
+**Advisor Feedback Draft:**
+This project leverages real-world data and sophisticated methods relevant to current industry standards, but it risks overwhelming students with its complexity. It would benefit from a clearer framework that simplifies the execution while ensuring that all students can engage meaningfully with the data and methodologies.
 
 ---
 
-# [Project Title]
+# GitHub Repo Trust Signals
 
-**Company / Org:** [Company / Org Name]  
-**Challenge Advisor:** [Name, Title, Email]  
+**Company / Org:** Microsoft  
+**Challenge Advisor:** David Koleczek, dkoleczek@microsoft.com  
 **Program:** Break Through Tech AI Studio - Fall 2026
 
 ---
 
-## 🏢 About [Company / Org Name]
+## 🏢 About Microsoft
 
-[2-3 sentences about your company: what you do, your industry, etc. You may also choose to specify your specific department or team.]
+Microsoft is a global technology company that specializes in software development, hardware, and cloud services. Within the organization, we focus on leveraging AI and machine learning to enhance the user experience and security across our products.
 
 ---
 
 ## 🎯 The Challenge
 
 ### Project Summary
-[In 2-3 sentences, describe what you're asking the team to do. Be specific about the type of data, ML techniques, and potential impact.]
-
-> **Example:** "In this project, your team will use customer transaction data and classification algorithms to build a model that predicts which users are likely to churn. This will help our retention team prioritize outreach."
+In this project, students will use real GitHub data and unsupervised learning techniques (anomaly detection, algorithms, and graph/network analysis) to build a repo-level trust score composed of multiple signals. Creating a trust metric will help Microsoft promote quality repos and find potentially malicious or manipulated repos faster.
 
 ### Success Criteria
-[What does success look like? Describe evaluation metrics (accuracy, F1 score, etc.) or qualitative outcomes that would make this project valuable to your company.]
+Predictive power (target of 0.7 AUC on known repositories), user-friendly categorical labeling (likely trust/neutral/suspicious), and adherence to responsible AI principles regarding privacy and bias.
 
 ### Project Milestones
 
@@ -54,9 +64,9 @@ Use these milestones to guide your work. Your team will create a **GitHub Projec
 
 | Month | Milestone | Key Activities |
 |-------|-----------|----------------|
-| **September** | [e.g., Data Understanding] | [e.g., Explore dataset, handle missing values, document findings] |
-| **October** | [e.g., Model Development] | [e.g., Train baseline model, experiment with approaches, iterate] |
-| **November** | [e.g., Evaluation & Presentation] | [e.g., Finalize model, prepare presentation, document results] |
+| **September** | Data Understanding | Explore dataset, handle missing values, document findings |
+| **October** | Model Development | Train baseline model, experiment with approaches, iterate |
+| **November** | Evaluation & Presentation | Finalize model, prepare presentation, document results |
 
 > **Note for the team:** Please create a GitHub Projects board in this repository to break these milestones into weekly tasks. Go to the **Projects** tab → **New project** → Choose **Board** → Add columns for each month.
 
@@ -64,27 +74,34 @@ Use these milestones to guide your work. Your team will create a **GitHub Projec
 
 ## 📊 Dataset
 
-**Name and Source:** [Dataset name and where it's from]  
-**Format:** [e.g., CSV, JSON, images]  
-**Size:** [Approximate size in MB/GB]  
+**Name and Source:** StarScout dataset, gharchive.org (GitHub events), GitHub API  
+**Format:** CSV  
+**Size:** over 10gb  
 **Location:** [Link to dataset or instructions for accessing it]
 
 ### Key Details
-- [Brief description of what's in the data]
-- [Any known limitations or preprocessing needed]
+- Data includes the StarScout dataset (CSV files with labels), gharchive.org (raw GitHub events accessed via BigQuery), and live data from the GitHub API.
+- Additional preprocessing may be needed to clean and format the datasets for analysis.
 - [Link to data dictionary or documentation, if available]
 
 ---
 
 ## 🛠️ Suggested Approach
 
-**ML Problem Type:** [e.g., Classification, Regression, NLP, Computer Vision, LLM/RAG]
+**ML Problem Type:** Classification
 
 **Recommended Libraries:**
-- [e.g., pandas, scikit-learn, TensorFlow, Hugging Face]
+- Unsupervised learning (anomaly detection, graph/network analysis)
+- Heuristics
+- GitHub API
+- BigQuery
+- StarScout dataset
+- gharchive.org
+- Google Colab
+- Azure (optional).
 
 **Evaluation Metrics:**
-- [e.g., Accuracy, Precision/Recall, RMSE, BLEU score]
+- AUC (Area Under the Curve), accuracy, precision/recall 
 
 ---
 
@@ -93,16 +110,16 @@ Use these milestones to guide your work. Your team will create a **GitHub Projec
 The following resources will help your team understand the problem space and potential technical approaches for this project:
 
 **Background Reading:**
-- [e.g., Link to an article or blog post about the problem domain]
-- [e.g., Link to an industry report or case study]
+- [An Overview of GitHub as a Platform for Open Source Software](https://example.com)
+- [The Importance of Trust Signals in Open Source](https://example.com)
 
 **Technical Tutorials:**
-- [e.g., Link to a free tutorial on the ML technique(s) involved]
-- [e.g., Link to documentation for a key library or tool]
+- [Unsupervised Learning Techniques for Anomaly Detection](https://example.com)
+- [Using GitHub API for Data Extraction](https://example.com)
 
 **Code Examples:**
-- [e.g., Link to a relevant GitHub repo]
-- [e.g., Link to a sample implementation or starter code]
+- [Link to a relevant GitHub repo](https://example.com)
+- [Sample implementation on anomaly detection](https://example.com)
 
 **Other:**
 - [Links to any additional resources — e.g., papers, videos, podcasts, etc.]
@@ -114,13 +131,13 @@ The following resources will help your team understand the problem space and pot
 ## 🤝 How We'll Work Together
 
 **Check-ins:** During our biweekly 60-min AI Studio Lab Section meeting block (2nd and 4th week of every month)  
-**Communication:** [e.g., Slack (Break Through Tech workspace) or email]  
-**Response time:** [e.g., Within 48 hours on weekdays]  
+**Communication:** Slack (Break Through Tech workspace)  
+**Response time:** Within 48 hours on weekdays  
 
 **Recommended Tools:**
-- **Coding:** [e.g., Google Colab, VS Code]
-- **Collaboration:** [e.g., GitHub, Notion]
-- **Virtual Meetings:** [e.g., Zoom, Google Meet]
+- **Coding:** Google Colab
+- **Collaboration:** GitHub, Notion
+- **Virtual Meetings:** Zoom
 
 ---
 
@@ -130,10 +147,10 @@ The following resources will help your team understand the problem space and pot
 2. **Begin reviewing the dataset** using the link above
 3. **Read the GitHub Projects documentation** [here](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects)
 
-I’m excited to work with you!
+I'm excited to work with you!
 
 ---
 
 ## ❓ Questions?
 
-Please bring any questions to our first meeting during the week of August 24th (Break Through Tech’s Bridge to Studio - Session B). 
+Please bring any questions to our first meeting during the week of August 24th (Break Through Tech's Bridge to Studio - Session B).
