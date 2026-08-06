@@ -63,10 +63,15 @@ Predictive power (target of 0.7 AUC on known repositories), user-friendly catego
 Use these milestones to guide your work. Your team will create a **GitHub Projects board** to track tasks within each milestone.
 
 | Month | Milestone | Key Activities |
-|-------|-----------|----------------|
-| **September** | Data Understanding | Explore dataset, handle missing values, document findings |
-| **October** | Model Development | Train baseline model, experiment with approaches, iterate |
-| **November** | Evaluation & Presentation | Finalize model, prepare presentation, document results |
+| :--- | :--- | :--- |
+| September | Data Ingestion, Cleaning & Baseline Setup | • Ingest StarScout labels and collect GitHub event data via GH Archive and GitHub REST API.<br>• Perform Exploratory Data Analysis (EDA) on repository star trajectories, fork patterns, and commit distributions.<br>• Preprocess raw activity logs, handle missing metadata, and construct baseline feature matrices.<br>• Train baseline classifiers (Logistic Regression / Decision Trees) to establish initial benchmark metrics. |
+| October | Feature Engineering & Advanced Classification | • Engineer domain-specific trust signals (commit cadence, contributor network diversity, issue closure velocity, star velocity).<br>• Develop advanced classification models (Random Forest, XGBoost, LightGBM) to detect suspicious or artificial repository activity.<br>• Perform hyperparameter tuning, cross-validation, and evaluate performance using Precision, Recall, and PR-AUC. |
+| November / December | Interpretability, Trust Radar UI & Deliverables | • Apply SHAP (SHapley Additive exPlanations) to isolate key behavioral features driving repo trust or risk scores.<br>• Build an interactive Streamlit application to query GitHub repositories in real time and display trust risk breakdowns.<br>• Finalize clean, reproducible GitHub repository, documentation, and stakeholder presentation deck. |
+
+### Stretch Goals
+* **Live GitHub REST API Scanner:** Build a real-time web crawler that dynamically fetches live repository metadata and calculates trust scores on demand.
+* **Contributor Graph Network Analysis:** Construct a network graph of contributor interactions to identify coordinated star-inflation rings or automated bot networks.
+* **Dynamic Markdown Trust Badge Generator:** Create an automated API endpoint that generates a embeddable SVG/Markdown trust badge for open-source project READMEs.
 
 > **Note for the team:** Please create a GitHub Projects board in this repository to break these milestones into weekly tasks. Go to the **Projects** tab → **New project** → Choose **Board** → Add columns for each month.
 
