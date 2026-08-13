@@ -31,13 +31,50 @@
 
 ## 👩🏽‍💻 **Setup and Installation**
 
-**Provide step-by-step instructions so someone else can run your code and reproduce your results. Depending on your setup, include:**
+<Please feel free to edit this as the project progresses>
 
-* How to clone the repository
-* How to install dependencies
-* How to set up the environment
-* How to access the dataset(s)
-* How to run the notebook or scripts
+Ensure that [uv](https://docs.astral.sh/uv/getting-started/installation/) is installed and available. Check with `uv --version`.
+
+Create uv virtual environment and install dependencies:
+
+```bash
+uv sync --frozen --all-extras --all-groups
+```
+
+To update existing dependencies:
+
+```bash
+uv sync -U --all-extras --all-groups
+```
+
+### Code Quality
+
+Format, lint, and type check (works for notebooks as well):
+
+```bash
+uv run ruff format && uv run ruff check --fix && uv run ty check
+```
+
+### Testing
+
+Run tests:
+
+```bash
+uv run pytest
+```
+
+### GitHub API Token
+
+This is optional but recommended. The [GitHub API client](src/gh_signals/github_client.py) can be provided authentication with your GitHub account for higher rate limits. There are a few options to do this:
+- (Recommended) Install the [GH CLI](https://cli.github.com/) and run `gh auth token`
+- Set a `GITHUB_TOKEN` environment variable
+  - Go to [New fine-grained personal access token](https://github.com/settings/personal-access-tokens/new)
+  - Name, description, expiration can be anything. Owner should be your account
+  - Set Repository access to "Public repositories" and no permissions
+  - Generate token
+  - Copy and set it as an [environment variable](https://en.wikipedia.org/wiki/Environment_variable) on your system
+
+**Important**: NEVER commit, include in a notebook, or share your token!
 
 ---
 
