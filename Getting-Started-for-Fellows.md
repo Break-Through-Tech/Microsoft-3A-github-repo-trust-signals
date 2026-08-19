@@ -20,5 +20,4 @@ To start adding project tasks aligned with your Challenge Project's monthly mile
 | [data](data) | Where project dataset files get stored (e.g., `.csv`, `.json`, `.parquet`, `.zip`) | Challenge Advisor
 | [README.md](README.md) | Where your team will document your project work; this will become the core of your AI Studio portfolio artifact | Fellows
 | [notebooks](notebooks) | Where your team's Jupyter notebooks for exploration, analysis, and modeling get stored (e.g., `.ipynb`) | Fellows
-| [requirements.txt](requirements.txt) | A place to list Python packages your project uses (e.g., `pandas`, `scikit-learn`) | Fellows
 | [gitignore](.gitignore) | A place to list files Git should ignore (e.g., system files like .DS_Store) | Fellows

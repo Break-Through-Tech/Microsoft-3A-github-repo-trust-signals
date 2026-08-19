@@ -1,0 +1,70 @@
+[project]
+name = "gh-signals"
+version = "0.1.0"
+description = "Code for GitHub Repo Trust Signals"
+readme = "README.md"
+authors = []
+requires-python = ">=3.13"
+dependencies = [
+    "aiohttp>=3.14",
+    "pydantic>=2.13",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.3",
+    "jupyterlab>=4.6",
+    "pytest-asyncio>=1.4",
+    "pytest>=9.1",
+    "ruff>=0.15",
+    "ty>=0.0.57",
+]
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.uv]
+exclude-newer = "3 days"
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "I",   # isort
+    "ISC", # flake8-implicit-str-concat
+    "N",   # pep8-naming
+    "PIE", # flake8-pie
+    "PT",  # flake-pytest-style
+    "PTH", # flake8-use-pathlib
+    "RUF", # ruff
+    "SIM", # flake8-simplify
+    "TID", # flake8-tidy-imports
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501", # line-too-long (formatter makes best-effort attempt)
+    # The following rules conflict with the formatter, see: https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+    "E111",   # indentation-with-invalid-multiple
+    "E114",   # indentation-with-invalid-multiple-comment
+    "E117",   # over-indented
+    "ISC002", # multi-line-implicit-string-concatenation
+    "W191",   # tab-indentation
+]
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+split-on-trailing-comma = false
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
