@@ -2,6 +2,9 @@
 
 **Company / Org:** Microsoft  
 **Challenge Advisor:** David Koleczek
+
+**AI Studio Coach:** Sai Duddu
+
 **Program:** Break Through Tech AI Studio - Fall 2026
 
 ---
