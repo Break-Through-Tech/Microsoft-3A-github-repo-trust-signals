@@ -30,9 +30,9 @@ def process_repository_data(raw_repo_data: dict) -> dict:
         "forks_count": forks,
         "stargazers_count": stargazers,
         "open_issues_count": open_issues,
-        "issues_to_stars_ratio": issues_per_star(open_issues, stargazers),
-        "stars_to_followers_ratio": stars_to_followers_ratio(stargazers, owner_followers),
-        "fork_to_stars_ratio": fork_to_stars_ratio(forks, stargazers)
+        "issue_to_star_ratio": issues_per_star(open_issues, stargazers),
+        "star_to_follower_ratio": stars_to_followers_ratio(stargazers, owner_followers),
+        "fork_to_star_ratio": fork_to_stars_ratio(forks, stargazers)
     }
 
 # Exporting to features.csv, raw_repos_json needs to be loaded from the JSON files or API output from Task 1 so commented out for now
