@@ -19,7 +19,7 @@ def stars_to_followers_ratio(repo_data: dict) -> float | None:
     return float(stars / followers)
 
 
-def issues_per_star(repo_data: dict) -> float | None:
+def issues_to_stars_ratio(repo_data: dict) -> float | None:
     """
     Ratio of open issues to stars.
     Low values may indicate low engagement.
@@ -32,3 +32,16 @@ def issues_per_star(repo_data: dict) -> float | None:
         return None
         
     return float(issues / stars)
+
+def fork_to_stars_ratio(forks: int, stars: int) -> float | None:
+    """
+    Ratio of forks to repository stars.
+
+    Returns None if forks or star data is missing or 0,
+    because division by 0 is undefined
+    """
+
+    if forks is None or stars is None or stars == 0:
+        return None
+
+    return float (forks / stars)
