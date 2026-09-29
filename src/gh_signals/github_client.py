@@ -17,7 +17,7 @@ from typing import Any, Self
 
 import aiohttp
 
-from gh_signals.schemas import Repo
+from gh_signals.schemas import Repo, StarWeek
 
 API_URL = "https://api.github.com"
 DEFAULT_CACHE_DIR = Path(__file__).parents[2] / ".cache" / "github"
@@ -73,6 +73,16 @@ class GitHubClient:
         response = await self._get(f"repos/{repo}")
         return Repo.model_validate(response)
 
+    async def get_star_history(self, repo: str) -> list[StarWeek]:
+        """Fetches a repository's daily star counts, grouped by week, most recent first."""
+        weeks: list[StarWeek] = []
+        for page in range(1, 101):
+            response = await self._get(f"repos/{repo}/stargazers/history?per_page=30&page={page}")
+            if not response:
+                break
+            weeks.extend(StarWeek.model_validate(week) for week in response)
+        return weeks
+
     async def __aenter__(self) -> Self:
         headers = {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
         token = await self._resolve_token()
@@ -95,7 +105,7 @@ class GitHubClient:
             await self._session.close()
             self._session = None
 
-    async def _get(self, path: str) -> dict[str, Any]:
+    async def _get(self, path: str) -> dict[str, Any] | list[Any]:
         """Returns the JSON payload for an API path, from cache when it is still fresh."""
         cached = self._read_cache(path)
         if cached is not None:
@@ -104,7 +114,7 @@ class GitHubClient:
         self._write_cache(path, payload)
         return payload
 
-    async def _request(self, path: str, allow_retry: bool = True) -> dict[str, Any]:
+    async def _request(self, path: str, allow_retry: bool = True) -> dict[str, Any] | list[Any]:
         """Issues a single GET, retrying once if GitHub asks us to back off."""
         session = self._session
         if session is None:
@@ -148,7 +158,7 @@ class GitHubClient:
             return None
         return self._cache_dir / f"{path.replace('/', '_')}.json"
 
-    def _read_cache(self, path: str) -> dict[str, Any] | None:
+    def _read_cache(self, path: str) -> dict[str, Any] | list[Any] | None:
         cache_path = self._cache_path(path)
         if cache_path is None or not cache_path.exists():
             return None
@@ -157,7 +167,7 @@ class GitHubClient:
         with cache_path.open(encoding="utf-8") as file:
             return json.load(file)
 
-    def _write_cache(self, path: str, payload: dict[str, Any]) -> None:
+    def _write_cache(self, path: str, payload: dict[str, Any] | list[Any]) -> None:
         cache_path = self._cache_path(path)
         if cache_path is None:
             return
