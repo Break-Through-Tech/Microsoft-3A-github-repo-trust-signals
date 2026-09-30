@@ -1,0 +1,65 @@
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+
+# 1. Load and combine the raw CSV datasets
+good_df = pd.read_csv('good_repos.csv')
+good_df['target_label'] = 1 
+
+uncertain_df = pd.read_csv('uncertain.csv')
+uncertain_df['target_label'] = 0
+
+# Merge datasets
+df = pd.concat([good_df, uncertain_df], ignore_index=True)
+
+# 2. Data Cleaning & Integrity Checks (Uncommented)
+# Drop duplicate repository entries if any exist
+df = df.drop_duplicates(subset=['repo'])
+
+# Remove rows missing the target label
+df = df.dropna(subset=['target_label'])
+
+# Check for missing feature values and data types
+print("Data Types:\n", df.dtypes)
+print("\nMissing Values Summary:\n", df.isnull().sum())
+
+# 3. Feature Selection & Exclusion
+EXCLUDE_COLS = ['repo', 'repo_id', 'full_name', 'url', 'target_label', 'label_explanation']
+feature_cols = [col for col in df.columns if col not in EXCLUDE_COLS]
+
+X = df[feature_cols]
+y = df['target_label']
+
+# -------------------------------------------------------------------------
+# 4. Train/Test Split (80/20) with Fixed Random Seed
+# -------------------------------------------------------------------------
+RANDOM_SEED = 42
+
+X_train, X_test, y_train, y_test, train_df, test_df = train_test_split(
+    X, 
+    y, 
+    df, 
+    test_size=0.20, 
+    random_state=RANDOM_SEED, 
+    stratify=y
+)
+
+# -------------------------------------------------------------------------
+# 5. Record & Log Distributions
+# -------------------------------------------------------------------------
+print(f"Total Repositories: {len(df)}")
+print(f"Training Set Count: {len(train_df)} ({len(train_df)/len(df):.1%})")
+print(f"Testing Set Count:  {len(test_df)} ({len(test_df)/len(df):.1%})")
+
+print("\n--- Target Label Distribution ---")
+print("Full Dataset:\n", df['target_label'].value_counts(normalize=True))
+print("Training Set:\n", train_df['target_label'].value_counts(normalize=True))
+print("Testing Set:\n", test_df['target_label'].value_counts(normalize=True))
+
+# Verify no duplicate repository overlap between train and test
+overlap = set(train_df['full_name']).intersection(set(test_df['full_name']))
+assert len(overlap) == 0, f"Overlap detected: {overlap}"
+
+# Save splits
+train_df.to_csv('data/train_split.csv', index=False)
+test_df.to_csv('data/test_split.csv', index=False)
