@@ -1,6 +1,13 @@
 import pandas as pd
 import numpy as np
+import os
 from sklearn.model_selection import train_test_split
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_auc_score
 
 # 1. Load and combine the raw CSV datasets
 good_df = pd.read_csv('good_repos.csv')
@@ -27,9 +34,18 @@ print("\nMissing Values Summary:\n", df.isnull().sum())
 EXCLUDE_COLS = ['repo', 'repo_id', 'full_name', 'url', 'target_label', 'label_explanation']
 feature_cols = [col for col in df.columns if col not in EXCLUDE_COLS]
 
+# Check for features with no variation 
+constant_cols = [
+    col for col in feature_cols
+    if df[col].nunique(dropna=True) <= 1
+]
+
+print("\nConstant Features:", constant_cols)
+
 X = df[feature_cols]
 y = df['target_label']
 
+os.makedirs('data', exist_ok=True)
 # -------------------------------------------------------------------------
 # 4. Train/Test Split (80/20) with Fixed Random Seed
 # -------------------------------------------------------------------------
@@ -63,3 +79,70 @@ assert len(overlap) == 0, f"Overlap detected: {overlap}"
 # Save splits
 train_df.to_csv('data/train_split.csv', index=False)
 test_df.to_csv('data/test_split.csv', index=False)
+
+
+# -------------------------------------------------------------------------
+# 6. Combined Baseline Model: Logistic Regression
+# -------------------------------------------------------------------------
+
+# Separate features and target labels using existing splits
+X_train = train_df[feature_cols]
+X_test = test_df[feature_cols]
+y_train = train_df['target_label']
+y_test = test_df['target_label']
+
+# Identify numerical and categorical features
+numeric_cols = X_train.select_dtypes(include=['number']).columns
+categorical_cols = X_train.select_dtypes(exclude=['number']).columns
+
+# Preprocess numerical features
+numeric_pipeline = Pipeline([
+    ('imputer', SimpleImputer(strategy='median')),
+    ('scaler', StandardScaler())
+])
+
+# Preprocess categorical features
+categorical_pipeline = Pipeline([
+    ('imputer', SimpleImputer(strategy='most_frequent')),
+    ('encoder', OneHotEncoder(handle_unknown='ignore'))
+])
+
+# Combine preprocessing steps
+preprocessor = ColumnTransformer([
+    ('num', numeric_pipeline, numeric_cols),
+    ('cat', categorical_pipeline, categorical_cols)
+])
+
+# Create the combined logistic regression model
+combined_model = Pipeline([
+    ('preprocessor', preprocessor),
+    ('classifier', LogisticRegression(
+        max_iter=1000,
+        random_state=RANDOM_SEED
+    ))
+])
+
+# Train the model using only training data
+combined_model.fit(X_train, y_train)
+
+# Predict probabilities on the test set
+y_prob = combined_model.predict_proba(X_test)[:, 1]
+
+# Calculate test ROC-AUC
+combined_auc = roc_auc_score(y_test, y_prob)
+
+print("\n--- Combined Logistic Regression Model ---")
+print(f"Test ROC-AUC: {combined_auc:.4f}")
+
+# Record experiment details
+print(f"Training samples: {len(X_train)}")
+print(f"Testing samples: {len(X_test)}")
+print(f"Number of features: {len(feature_cols)}")
+
+# Save model evaluation results
+results = pd.DataFrame({
+    'Metric': ['Test ROC-AUC'],
+    'Score': [combined_auc]
+})
+
+results.to_csv('data/combined_model_results.csv', index=False)
