@@ -1,0 +1,57 @@
+import csv
+import json
+import os
+import time
+import requests
+
+
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
+HEADERS = {
+   "Accept": "application/vnd.github.v3+json",
+   **({"Authorization": f"token {GITHUB_TOKEN}"} if GITHUB_TOKEN else {}),
+}
+
+
+DATASETS = {"good": "data/good_repos.csv", "uncertain": "data/uncertain.csv"}
+
+
+for category, csv_path in DATASETS.items():
+   if not os.path.exists(csv_path):
+       continue
+
+
+   output_dir = os.path.join("data/raw_json", category)
+   os.makedirs(output_dir, exist_ok=True)
+
+
+   with open(csv_path, mode="r", encoding="utf-8") as f:
+       repos = [row[0].strip() for row in csv.reader(f) if row and row[0].strip()]
+
+
+   for repo in repos:
+       json_path = os.path.join(output_dir, f"{repo.replace('/', '_')}.json")
+
+
+       # Local cache check
+       if os.path.exists(json_path):
+           print(f"Skipping cached: {repo}")
+           continue
+
+
+       url = f"https://api.github.com/repos/{repo}"
+       res = requests.get(url, headers=HEADERS)
+
+
+       # Handle rate limit
+       if res.status_code == 403 and res.headers.get("X-RateLimit-Remaining") == "0":
+           reset_time = int(res.headers.get("X-RateLimit-Reset", time.time() + 60))
+           time.sleep(max(reset_time - int(time.time()), 1))
+           res = requests.get(url, headers=HEADERS)
+
+
+       if res.status_code == 200:
+           with open(json_path, "w", encoding="utf-8") as out:
+               json.dump(res.json(), out, indent=2)
+           print(f"Saved: {json_path}")
+       else:
+           print(f"Failed ({res.status_code}): {repo}")
