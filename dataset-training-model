@@ -1,7 +1,5 @@
 import pandas as pd
 import numpy as np
-import os
-from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
@@ -9,56 +7,37 @@ from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 
-# 1. Load and combine the raw CSV datasets
-good_df = pd.read_csv('good_repos.csv')
-good_df['target_label'] = 1 
+RANDOM_SEED = 42
 
-uncertain_df = pd.read_csv('uncertain.csv')
-uncertain_df['target_label'] = 0
+# 1. Load Part 1's saved split (made by notebooks/002_build_dataset_and_split.ipynb)
+train_df = pd.read_csv('data/train_split.csv')
+test_df = pd.read_csv('data/test_split.csv')
+df = pd.concat([train_df, test_df], ignore_index=True)
 
-# Merge datasets
-df = pd.concat([good_df, uncertain_df], ignore_index=True)
-
-# 2. Data Cleaning & Integrity Checks (Uncommented)
-# Drop duplicate repository entries if any exist
-df = df.drop_duplicates(subset=['repo'])
-
-# Remove rows missing the target label
-df = df.dropna(subset=['target_label'])
-
-# Check for missing feature values and data types
+# 2. Data Cleaning & Integrity Checks
 print("Data Types:\n", df.dtypes)
 print("\nMissing Values Summary:\n", df.isnull().sum())
 
 # 3. Feature Selection & Exclusion
-EXCLUDE_COLS = ['repo', 'repo_id', 'full_name', 'url', 'target_label', 'label_explanation']
-feature_cols = [col for col in df.columns if col not in EXCLUDE_COLS]
+# Explicit list so the text `label` column can't leak the target into the model
+feature_cols = [
+    "stargazers_count", "forks_count", "subscribers_count", "open_issues_count",
+    "size", "age_days", "days_since_push", "fork_star_ratio",
+    "subscriber_star_ratio", "issues_per_star", "stars_per_day",
+    "has_license", "is_org_owned", "contributor_activity_ratio",
+    "ghost_contributor_ratio",
+]
 
-# Check for features with no variation 
+# Check for features with no variation
 constant_cols = [
     col for col in feature_cols
     if df[col].nunique(dropna=True) <= 1
 ]
-
 print("\nConstant Features:", constant_cols)
 
-X = df[feature_cols]
-y = df['target_label']
-
-os.makedirs('data', exist_ok=True)
 # -------------------------------------------------------------------------
-# 4. Train/Test Split (80/20) with Fixed Random Seed
+# 4. Train/Test Split: already done in Part 1, so we reuse it as is
 # -------------------------------------------------------------------------
-RANDOM_SEED = 42
-
-X_train, X_test, y_train, y_test, train_df, test_df = train_test_split(
-    X, 
-    y, 
-    df, 
-    test_size=0.20, 
-    random_state=RANDOM_SEED, 
-    stratify=y
-)
 
 # -------------------------------------------------------------------------
 # 5. Record & Log Distributions
@@ -76,18 +55,13 @@ print("Testing Set:\n", test_df['target_label'].value_counts(normalize=True))
 overlap = set(train_df['full_name']).intersection(set(test_df['full_name']))
 assert len(overlap) == 0, f"Overlap detected: {overlap}"
 
-# Save splits
-train_df.to_csv('data/train_split.csv', index=False)
-test_df.to_csv('data/test_split.csv', index=False)
-
-
 # -------------------------------------------------------------------------
 # 6. Combined Baseline Model: Logistic Regression
 # -------------------------------------------------------------------------
 
 # Separate features and target labels using existing splits
-X_train = train_df[feature_cols]
-X_test = test_df[feature_cols]
+X_train = train_df[feature_cols].astype(float)
+X_test = test_df[feature_cols].astype(float)
 y_train = train_df['target_label']
 y_test = test_df['target_label']
 
