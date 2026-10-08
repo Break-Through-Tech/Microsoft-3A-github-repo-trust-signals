@@ -8,7 +8,9 @@ Example:
 
 import asyncio
 from collections.abc import Mapping
+from datetime import datetime
 import json
+import math
 import os
 from pathlib import Path
 import time
@@ -19,9 +21,11 @@ from typing_extensions import Self
 import aiohttp
 
 from gh_signals.schemas import Repo, StarWeek
+from gh_signals.schemas import ContributorStats, Repo, Stargazer, User
 
 API_URL = "https://api.github.com"
 DEFAULT_CACHE_DIR = Path(__file__).parents[2] / ".cache" / "github"
+STAR_TIMESTAMP_ACCEPT = "application/vnd.github.star+json"
 
 
 class GitHubError(Exception):
@@ -83,6 +87,95 @@ class GitHubClient:
                 break
             weeks.extend(StarWeek.model_validate(week) for week in response)
         return weeks
+    async def get_stargazer_timestamps(
+        self, repo: str, stargazers_count: int, max_pages: int = 10, per_page: int = 100
+    ) -> list[datetime]:
+        """Fetches when a repo's most recent stargazers starred it.
+
+        GitHub returns stargazers oldest-first with no way to reverse that order, so this jumps
+        straight to the last page(s) using the already-known star count, rather than paging
+        through the entire history to reach the end. That keeps the request count bounded
+        regardless of how many stars a repo has, which matters for burstiness: a sudden recent
+        spike is visible in the newest stars, not the oldest.
+
+        As of GitHub's July 2026 starring-API changes, this endpoint is restricted to a repo's
+        admins and collaborators (see
+        `the docs <https://docs.github.com/rest/activity/starring>`_); calling it for a repo we do
+        not have that access to raises :class:`GitHubError` with ``status=404``, even though the
+        repo itself is public. GraphQL's equivalent field is subject to the same restriction. There
+        is currently no way to fetch per-star timestamps for an arbitrary public repo through
+        GitHub's API; callers should catch :class:`GitHubError` around this call.
+
+        Args:
+            repo: A repository in ``owner/name`` form.
+            stargazers_count: The repo's current star count, e.g. from ``get_repo``.
+            max_pages: How many of the most recent pages to fetch.
+            per_page: Stars per page (GitHub's max is 100).
+
+        Returns:
+            Timestamps of the fetched stargazers, oldest first. Empty if the repo has no stars.
+
+        Raises:
+            GitHubError: If GitHub rejects the request, in particular ``status=404`` when we are
+                not a collaborator on ``repo``.
+        """
+        last_page = math.ceil(stargazers_count / per_page) if stargazers_count > 0 else 0
+        first_page = max(1, last_page - max_pages + 1)
+        headers = {"Accept": STAR_TIMESTAMP_ACCEPT}
+
+        async def fetch_page(page: int) -> list[Stargazer]:
+            payload = await self._get(f"repos/{repo}/stargazers?per_page={per_page}&page={page}", headers=headers)
+            return [Stargazer.model_validate(item) for item in payload]
+
+        pages = await asyncio.gather(*(fetch_page(page) for page in range(first_page, last_page + 1)))
+        return [stargazer.starred_at for page in pages for stargazer in page]
+
+    async def get_contributor_stats(
+        self, repo: str, max_attempts: int = 6, retry_delay_seconds: float = 2.0
+    ) -> list[ContributorStats]:
+        """Fetches each contributor's all-time commit total and weekly commit history.
+
+        GitHub computes these stats asynchronously: a repo that has not been queried recently
+        returns an empty list while it works, so this polls with a short delay until the stats
+        are ready or ``max_attempts`` is reached. An empty (still-computing) response is never
+        cached, so a later call retries from scratch instead of reusing a stale empty result.
+
+        Args:
+            repo: A repository in ``owner/name`` form.
+            max_attempts: How many times to poll before giving up.
+            retry_delay_seconds: How long to wait between polls.
+
+        Returns:
+            One entry per contributor, or an empty list if the stats never became ready.
+        """
+        path = f"repos/{repo}/stats/contributors"
+        cached = self._read_cache(path)
+        if cached is not None:
+            return [ContributorStats.model_validate(item) for item in cached]
+
+        for attempt in range(max_attempts):
+            payload = await self._request(path)
+            if payload:
+                self._write_cache(path, payload)
+                return [ContributorStats.model_validate(item) for item in payload]
+            if attempt < max_attempts - 1:
+                await asyncio.sleep(retry_delay_seconds)
+        return []
+
+    async def get_user(self, username: str) -> User:
+        """Fetches a GitHub user's public profile.
+
+        Args:
+            username: A GitHub login.
+
+        Returns:
+            The user's profile fields.
+
+        Raises:
+            GitHubError: If GitHub rejects the request, such as when the account does not exist.
+        """
+        response = await self._get(f"users/{username}")
+        return User.model_validate(response)
 
     async def __aenter__(self) -> Self:
         headers = {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
@@ -107,30 +200,44 @@ class GitHubClient:
             self._session = None
 
     async def _get(self, path: str) -> dict[str, Any] | list[Any]:
+    async def _get(self, path: str, headers: Mapping[str, str] | None = None) -> Any:
         """Returns the JSON payload for an API path, from cache when it is still fresh."""
         cached = self._read_cache(path)
         if cached is not None:
             return cached
-        payload = await self._request(path)
+        payload = await self._request(path, headers=headers)
         self._write_cache(path, payload)
         return payload
 
     async def _request(self, path: str, allow_retry: bool = True) -> dict[str, Any] | list[Any]:
         """Issues a single GET, retrying once if GitHub asks us to back off."""
+    async def _request(self, path: str, allow_retry: bool = True, headers: Mapping[str, str] | None = None) -> Any:
+        """Issues a single GET, retrying once if GitHub asks us to back off or the connection drops mid-response.
+
+        A pooled connection occasionally gets closed partway through a large response (seen on
+        ``stats/contributors`` for repos with a long contributor history) under concurrent load;
+        that surfaces as ``aiohttp.ClientPayloadError`` rather than an HTTP error status, so it
+        needs its own retry alongside the rate-limit one.
+        """
         session = self._session
         if session is None:
             raise RuntimeError("Use GitHubClient as an async context manager: async with GitHubClient() as client")
 
         await self._wait_for_quota()
-        async with session.get(f"{API_URL}/{path}") as response:
-            self._record_quota(response.headers)
-            retry_after = response.headers.get("Retry-After")
-            if allow_retry and retry_after is not None and response.status in (403, 429):
-                await asyncio.sleep(float(retry_after))
-                return await self._request(path, allow_retry=False)
-            if not response.ok:
-                raise GitHubError(response.status, path, await response.text())
-            return await response.json()
+        try:
+            async with session.get(f"{API_URL}/{path}", headers=headers) as response:
+                self._record_quota(response.headers)
+                retry_after = response.headers.get("Retry-After")
+                if allow_retry and retry_after is not None and response.status in (403, 429):
+                    await asyncio.sleep(float(retry_after))
+                    return await self._request(path, allow_retry=False, headers=headers)
+                if not response.ok:
+                    raise GitHubError(response.status, path, await response.text())
+                return await response.json()
+        except aiohttp.ClientPayloadError:
+            if not allow_retry:
+                raise
+            return await self._request(path, allow_retry=False, headers=headers)
 
     def _record_quota(self, headers: Mapping[str, str]) -> None:
         """Stores how much of the hourly quota is left, per GitHub's response headers."""
@@ -160,6 +267,7 @@ class GitHubClient:
         return self._cache_dir / f"{path.replace('/', '_')}.json"
 
     def _read_cache(self, path: str) -> dict[str, Any] | list[Any] | None:
+    def _read_cache(self, path: str) -> Any | None:
         cache_path = self._cache_path(path)
         if cache_path is None or not cache_path.exists():
             return None
@@ -169,6 +277,7 @@ class GitHubClient:
             return json.load(file)
 
     def _write_cache(self, path: str, payload: dict[str, Any] | list[Any]) -> None:
+    def _write_cache(self, path: str, payload: Any) -> None:
         cache_path = self._cache_path(path)
         if cache_path is None:
             return

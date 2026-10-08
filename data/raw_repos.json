@@ -1,0 +1,102 @@
+[
+  {
+    "full_name": "torvalds/linux",
+    "stargazers_count": 251433,
+    "forks_count": 67014
+  },
+  {
+    "full_name": "python/cpython",
+    "stargazers_count": 77556,
+    "forks_count": 37548
+  },
+  {
+    "full_name": "rust-lang/rust",
+    "stargazers_count": 119697,
+    "forks_count": 17856
+  },
+  {
+    "full_name": "golang/go",
+    "stargazers_count": 139321,
+    "forks_count": 21512
+  },
+  {
+    "full_name": "psf/requests",
+    "stargazers_count": 54503,
+    "forks_count": 12071
+  },
+  {
+    "full_name": "astral-sh/uv",
+    "stargazers_count": 90490,
+    "forks_count": 3632
+  },
+  {
+    "full_name": "pallets/flask",
+    "stargazers_count": 74933,
+    "forks_count": 17060
+  },
+  {
+    "full_name": "pandas-dev/pandas",
+    "stargazers_count": 49928,
+    "forks_count": 20473
+  },
+  {
+    "full_name": "fastapi/fastapi",
+    "stargazers_count": 102868,
+    "forks_count": 10003
+  },
+  {
+    "full_name": "pydantic/pydantic",
+    "stargazers_count": 28955,
+    "forks_count": 3020
+  },
+  {
+    "full_name": "huggingface/transformers",
+    "stargazers_count": 167046,
+    "forks_count": 34765
+  },
+  {
+    "full_name": "psf/black",
+    "stargazers_count": 41874,
+    "forks_count": 2911
+  },
+  {
+    "full_name": "fastapi/sqlmodel",
+    "stargazers_count": 18361,
+    "forks_count": 890
+  },
+  {
+    "full_name": "pypa/pip",
+    "stargazers_count": 10292,
+    "forks_count": 3398
+  },
+  {
+    "full_name": "pypa/build",
+    "stargazers_count": 857,
+    "forks_count": 181
+  },
+  {
+    "full_name": "psf/cachecontrol",
+    "stargazers_count": 505,
+    "forks_count": 153
+  },
+  {
+    "full_name": "octocat/Spoon-Knife",
+    "stargazers_count": 14084,
+    "forks_count": 159846
+  },
+  {
+    "full_name": "octocat/Hello-World",
+    "stargazers_count": 3851,
+    "forks_count": 7019
+  },
+  {
+    "full_name": "freeCodeCamp/freeCodeCamp",
+    "stargazers_count": 456924,
+    "forks_count": 48435
+  },
+  {
+    "full_name": "pypa/sampleproject",
+    "stargazers_count": 5242,
+    "forks_count": 1748
+  }
+]
