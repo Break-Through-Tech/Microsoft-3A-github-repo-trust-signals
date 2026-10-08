@@ -13,7 +13,8 @@ import os
 from pathlib import Path
 import time
 from types import TracebackType
-from typing import Any, Self
+from typing import Any
+from typing_extensions import Self
 
 import aiohttp
 

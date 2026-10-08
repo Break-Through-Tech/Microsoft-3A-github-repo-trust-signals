@@ -28,6 +28,7 @@ def issues_to_stars_ratio(issues: int, stars: int) -> float | None:
         
     return float(issues / stars)
 
+
 def fork_to_stars_ratio(forks: int, stars: int) -> float | None:
     """
     Ratio of forks to repository stars.
@@ -39,4 +40,4 @@ def fork_to_stars_ratio(forks: int, stars: int) -> float | None:
     if forks is None or stars is None or stars == 0:
         return None
 
-    return float (forks / stars)
+    return float(forks / stars)

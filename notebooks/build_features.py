@@ -1,5 +1,7 @@
 import sys
 import os
+import json
+import glob
 import pandas as pd
 
 # search path
@@ -30,11 +32,25 @@ def process_repository_data(raw_repo_data: dict) -> dict:
         "forks_count": forks,
         "stargazers_count": stargazers,
         "open_issues_count": open_issues,
-        "issue_to_star_ratio": issues_per_star(open_issues, stargazers),
+        "issue_to_star_ratio": issues_to_stars_ratio(open_issues, stargazers),
         "star_to_follower_ratio": stars_to_followers_ratio(stargazers, owner_followers),
         "fork_to_star_ratio": fork_to_stars_ratio(forks, stargazers)
     }
 
-# Exporting to features.csv, raw_repos_json needs to be loaded from the JSON files or API output from Task 1 so commented out for now
-# df = pd.DataFrame([process_repository_data(repo) for repo in raw_repos_json])
-# df.to_csv("data/features.csv", index=False)
+def load_raw_data() -> list[dict]:
+    """Loads JSON repo metadata"""
+    if os.path.exists("data/raw_repos.json"):
+        with open("data/raw_repos.json", "r") as f:
+            return json.load(f)
+            
+    raw_repos = []
+    for file_path in glob.glob("data/raw/*.json"):
+        with open(file_path, "r") as f:
+            raw_repos.append(json.load(f))
+            
+    return raw_repos
+
+if __name__ == "__main__":
+    raw_repos_json = load_raw_data()
+    df = pd.DataFrame([process_repository_data(repo) for repo in raw_repos_json])
+    df.to_csv("data/features.csv", index=False)
