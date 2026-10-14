@@ -1,7 +1,17 @@
+"""Trust signals computed from GitHub metadata.
+
+Every function here is a pure computation over already-fetched data (timestamps, contributor
+stats, user profiles). Fetching that data is the caller's job, via ``gh_signals.github_client``;
+keeping the two separate makes the signals themselves fast to test without hitting the network.
 """
-Signal functions for GitHub Repo Trust Signals.
-Each function takes a repo and returns a numeric value.
-"""
+
+from collections.abc import Sequence
+from datetime import UTC, datetime, timedelta
+from itertools import pairwise
+import statistics
+
+from gh_signals.schemas import ContributorStats, User
+
 
 def stars_to_followers_ratio(stars: int, followers: int) -> float | None:
     """
@@ -9,10 +19,10 @@ def stars_to_followers_ratio(stars: int, followers: int) -> float | None:
     High stars with low followers can indicate artificial stars.
     Returns None if data is missing or followers == 0.
     """
-    
+
     if stars is None or followers is None or followers == 0:
         return None
-        
+
     return float(stars / followers)
 
 
@@ -22,10 +32,10 @@ def issues_to_stars_ratio(issues: int, stars: int) -> float | None:
     Low values may indicate low engagement.
     Returns None if data is missing or stars == 0.
     """
-    
+
     if issues is None or stars is None or stars == 0:
         return None
-        
+
     return float(issues / stars)
 
 
@@ -41,19 +51,6 @@ def fork_to_stars_ratio(forks: int, stars: int) -> float | None:
         return None
 
     return float(forks / stars)
-"""Trust signals computed from GitHub metadata.
-
-Every function here is a pure computation over already-fetched data (timestamps, contributor
-stats, user profiles). Fetching that data is the caller's job, via ``gh_signals.github_client``;
-keeping the two separate makes the signals themselves fast to test without hitting the network.
-"""
-
-from collections.abc import Sequence
-from datetime import UTC, datetime, timedelta
-from itertools import pairwise
-import statistics
-
-from gh_signals.schemas import ContributorStats, User
 
 
 def star_growth_burstiness(timestamps: Sequence[datetime]) -> float | None:

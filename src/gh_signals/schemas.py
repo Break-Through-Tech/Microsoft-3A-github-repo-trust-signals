@@ -29,15 +29,6 @@ class Repo(BaseModel):
     owner: Owner
     stargazers_count: int
     forks_count: int
-    created_at: datetime
-
-
-class StarWeek(BaseModel):
-    """One week of star history. ``days`` starts on Sunday."""
-
-    week: int
-    total: int
-    days: list[int]
     subscribers_count: int
     open_issues_count: int
     size: int
@@ -50,6 +41,14 @@ class StarWeek(BaseModel):
     language: str | None = None
     description: str | None = None
     license: License | None = None
+
+
+class StarWeek(BaseModel):
+    """One week of star history. ``days`` starts on Sunday."""
+
+    week: int
+    total: int
+    days: list[int]
 
 
 class Stargazer(BaseModel):

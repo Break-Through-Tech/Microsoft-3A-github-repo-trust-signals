@@ -15,13 +15,11 @@ import os
 from pathlib import Path
 import time
 from types import TracebackType
-from typing import Any
-from typing_extensions import Self
+from typing import Any, Self
 
 import aiohttp
 
-from gh_signals.schemas import Repo, StarWeek
-from gh_signals.schemas import ContributorStats, Repo, Stargazer, User
+from gh_signals.schemas import ContributorStats, Repo, Stargazer, StarWeek, User
 
 API_URL = "https://api.github.com"
 DEFAULT_CACHE_DIR = Path(__file__).parents[2] / ".cache" / "github"
@@ -87,6 +85,7 @@ class GitHubClient:
                 break
             weeks.extend(StarWeek.model_validate(week) for week in response)
         return weeks
+
     async def get_stargazer_timestamps(
         self, repo: str, stargazers_count: int, max_pages: int = 10, per_page: int = 100
     ) -> list[datetime]:
@@ -199,7 +198,6 @@ class GitHubClient:
             await self._session.close()
             self._session = None
 
-    async def _get(self, path: str) -> dict[str, Any] | list[Any]:
     async def _get(self, path: str, headers: Mapping[str, str] | None = None) -> Any:
         """Returns the JSON payload for an API path, from cache when it is still fresh."""
         cached = self._read_cache(path)
@@ -209,8 +207,6 @@ class GitHubClient:
         self._write_cache(path, payload)
         return payload
 
-    async def _request(self, path: str, allow_retry: bool = True) -> dict[str, Any] | list[Any]:
-        """Issues a single GET, retrying once if GitHub asks us to back off."""
     async def _request(self, path: str, allow_retry: bool = True, headers: Mapping[str, str] | None = None) -> Any:
         """Issues a single GET, retrying once if GitHub asks us to back off or the connection drops mid-response.
 
@@ -266,7 +262,6 @@ class GitHubClient:
             return None
         return self._cache_dir / f"{path.replace('/', '_')}.json"
 
-    def _read_cache(self, path: str) -> dict[str, Any] | list[Any] | None:
     def _read_cache(self, path: str) -> Any | None:
         cache_path = self._cache_path(path)
         if cache_path is None or not cache_path.exists():
@@ -276,14 +271,15 @@ class GitHubClient:
         with cache_path.open(encoding="utf-8") as file:
             return json.load(file)
 
-    def _write_cache(self, path: str, payload: dict[str, Any] | list[Any]) -> None:
     def _write_cache(self, path: str, payload: Any) -> None:
         cache_path = self._cache_path(path)
         if cache_path is None:
             return
         cache_path.parent.mkdir(parents=True, exist_ok=True)
-        with cache_path.open("w", encoding="utf-8") as file:
+        temporary_path = cache_path.with_name(f"{cache_path.name}.tmp")
+        with temporary_path.open("w", encoding="utf-8") as file:
             json.dump(payload, file)
+        temporary_path.replace(cache_path)  # Atomic, so an interrupted run never leaves a truncated response behind.
 
 
 async def _gh_cli_token() -> str | None:
