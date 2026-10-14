@@ -1,18 +1,18 @@
-"""Computes star timing features from daily star history and writes them to ``data/star_features.csv``."""
+"""Star timing features computed from daily star history.
 
-import asyncio
+The features become columns of ``data/features.csv``; see ``gh_signals.build_dataset``.
+"""
+
 import csv
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 import statistics
 
-from gh_signals.github_client import GitHubClient, GitHubError
 from gh_signals.schemas import StarWeek
 
 DATA_DIR = Path(__file__).parents[2] / "data"
 LABEL_FILES = {"good": DATA_DIR / "good_repos.csv", "uncertain": DATA_DIR / "uncertain.csv"}
-FEATURES_PATH = DATA_DIR / "star_features.csv"
 
 
 @dataclass
@@ -69,37 +69,3 @@ def compute_features(repo_name: str, label: str, counts: dict[date, int]) -> Sta
         active_day_ratio=sum(value > 0 for value in values) / len(values),
         burstiness=(std - mean) / (std + mean),
     )
-
-
-async def fetch_features(
-    client: GitHubClient, semaphore: asyncio.Semaphore, repo: str, label: str, end: date
-) -> StarFeatures:
-    async with semaphore:
-        try:
-            metadata = await client.get_repo(repo)
-            weeks = await client.get_star_history(repo)
-        except GitHubError as error:
-            return StarFeatures(repo, label, status=f"error_{error.status}")
-    return compute_features(metadata.full_name, label, daily_counts(weeks, metadata.created_at.date(), end))
-
-
-async def collect(end: date) -> list[StarFeatures]:
-    semaphore = asyncio.Semaphore(8)
-    async with GitHubClient() as client:
-        return await asyncio.gather(
-            *(fetch_features(client, semaphore, repo, label, end) for repo, label in load_labeled_repos())
-        )
-
-
-def main() -> None:
-    yesterday = datetime.now(tz=UTC).date() - timedelta(days=1)
-    rows = [asdict(features) for features in asyncio.run(collect(end=yesterday))]
-    with FEATURES_PATH.open("w", encoding="utf-8", newline="") as file:
-        writer = csv.DictWriter(file, fieldnames=list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
-    print(f"Wrote {len(rows)} repos to {FEATURES_PATH}")
-
-
-if __name__ == "__main__":
-    main()
