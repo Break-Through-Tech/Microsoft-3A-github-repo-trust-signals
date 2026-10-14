@@ -1,0 +1,56 @@
+{
+  "as_of": "2026-10-14T01:20:43+00:00",
+  "random_seed": 42,
+  "test_size": 0.2,
+  "top_n_contributors": 10,
+  "n_repos": 106,
+  "label_counts": {
+    "good": 82,
+    "uncertain": 24
+  },
+  "split_counts": {
+    "train": {
+      "good": 65,
+      "uncertain": 19
+    },
+    "test": {
+      "good": 17,
+      "uncertain": 5
+    }
+  },
+  "identifier_columns": [
+    "full_name",
+    "listed_as",
+    "label",
+    "target_label",
+    "split"
+  ],
+  "signal_columns": [
+    "stargazers_count",
+    "forks_count",
+    "subscribers_count",
+    "open_issues_count",
+    "size",
+    "age_days",
+    "days_since_push",
+    "fork_star_ratio",
+    "subscriber_star_ratio",
+    "issues_per_star",
+    "stars_per_day",
+    "has_license",
+    "is_org_owned",
+    "contributor_activity_ratio",
+    "ghost_contributor_ratio",
+    "star_to_follower_ratio",
+    "peak_stars",
+    "max_day_share",
+    "active_day_ratio",
+    "burstiness"
+  ],
+  "missing_values": {},
+  "label_files_sha256": {
+    "good": "54a57cd678bcb66408f9480b538fbdaa9ec71321ee43de34e6231e9e8bba01fc",
+    "uncertain": "6bdc8dc9e904ca2e629f08dc781d7cac605aefa667c825c88306f03a06f904d9"
+  },
+  "features_sha256": "22d2015363fee85c5022f558241aa22daeaba088e45645abd52802fa630a90e2"
+}
