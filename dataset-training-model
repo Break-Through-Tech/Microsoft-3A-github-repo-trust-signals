@@ -1,0 +1,122 @@
+import pandas as pd
+import numpy as np
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_auc_score
+
+RANDOM_SEED = 42
+
+# 1. Load Part 1's saved split (made by notebooks/002_build_dataset_and_split.ipynb)
+train_df = pd.read_csv('data/train_split.csv')
+test_df = pd.read_csv('data/test_split.csv')
+df = pd.concat([train_df, test_df], ignore_index=True)
+
+# 2. Data Cleaning & Integrity Checks
+print("Data Types:\n", df.dtypes)
+print("\nMissing Values Summary:\n", df.isnull().sum())
+
+# 3. Feature Selection & Exclusion
+# Explicit list so the text `label` column can't leak the target into the model
+feature_cols = [
+    "stargazers_count", "forks_count", "subscribers_count", "open_issues_count",
+    "size", "age_days", "days_since_push", "fork_star_ratio",
+    "subscriber_star_ratio", "issues_per_star", "stars_per_day",
+    "has_license", "is_org_owned", "contributor_activity_ratio",
+    "ghost_contributor_ratio",
+]
+
+# Check for features with no variation
+constant_cols = [
+    col for col in feature_cols
+    if df[col].nunique(dropna=True) <= 1
+]
+print("\nConstant Features:", constant_cols)
+
+# -------------------------------------------------------------------------
+# 4. Train/Test Split: already done in Part 1, so we reuse it as is
+# -------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------
+# 5. Record & Log Distributions
+# -------------------------------------------------------------------------
+print(f"Total Repositories: {len(df)}")
+print(f"Training Set Count: {len(train_df)} ({len(train_df)/len(df):.1%})")
+print(f"Testing Set Count:  {len(test_df)} ({len(test_df)/len(df):.1%})")
+
+print("\n--- Target Label Distribution ---")
+print("Full Dataset:\n", df['target_label'].value_counts(normalize=True))
+print("Training Set:\n", train_df['target_label'].value_counts(normalize=True))
+print("Testing Set:\n", test_df['target_label'].value_counts(normalize=True))
+
+# Verify no duplicate repository overlap between train and test
+overlap = set(train_df['full_name']).intersection(set(test_df['full_name']))
+assert len(overlap) == 0, f"Overlap detected: {overlap}"
+
+# -------------------------------------------------------------------------
+# 6. Combined Baseline Model: Logistic Regression
+# -------------------------------------------------------------------------
+
+# Separate features and target labels using existing splits
+X_train = train_df[feature_cols].astype(float)
+X_test = test_df[feature_cols].astype(float)
+y_train = train_df['target_label']
+y_test = test_df['target_label']
+
+# Identify numerical and categorical features
+numeric_cols = X_train.select_dtypes(include=['number']).columns
+categorical_cols = X_train.select_dtypes(exclude=['number']).columns
+
+# Preprocess numerical features
+numeric_pipeline = Pipeline([
+    ('imputer', SimpleImputer(strategy='median')),
+    ('scaler', StandardScaler())
+])
+
+# Preprocess categorical features
+categorical_pipeline = Pipeline([
+    ('imputer', SimpleImputer(strategy='most_frequent')),
+    ('encoder', OneHotEncoder(handle_unknown='ignore'))
+])
+
+# Combine preprocessing steps
+preprocessor = ColumnTransformer([
+    ('num', numeric_pipeline, numeric_cols),
+    ('cat', categorical_pipeline, categorical_cols)
+])
+
+# Create the combined logistic regression model
+combined_model = Pipeline([
+    ('preprocessor', preprocessor),
+    ('classifier', LogisticRegression(
+        max_iter=1000,
+        random_state=RANDOM_SEED
+    ))
+])
+
+# Train the model using only training data
+combined_model.fit(X_train, y_train)
+
+# Predict probabilities on the test set
+y_prob = combined_model.predict_proba(X_test)[:, 1]
+
+# Calculate test ROC-AUC
+combined_auc = roc_auc_score(y_test, y_prob)
+
+print("\n--- Combined Logistic Regression Model ---")
+print(f"Test ROC-AUC: {combined_auc:.4f}")
+
+# Record experiment details
+print(f"Training samples: {len(X_train)}")
+print(f"Testing samples: {len(X_test)}")
+print(f"Number of features: {len(feature_cols)}")
+
+# Save model evaluation results
+results = pd.DataFrame({
+    'Metric': ['Test ROC-AUC'],
+    'Score': [combined_auc]
+})
+
+results.to_csv('data/combined_model_results.csv', index=False)
