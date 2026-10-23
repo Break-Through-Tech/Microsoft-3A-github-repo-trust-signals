@@ -16,11 +16,15 @@ from pathlib import Path
 import subprocess
 import time
 from types import TracebackType
-from typing import Any, Self
+from typing import Any
+from typing_extensions import Self
 
 import aiohttp
 
-from gh_signals.schemas import ContributorStats, Repo, Stargazer, StarWeek, User
+try:
+    from gh_signals.schemas import ContributorStats, Repo, Stargazer, StarWeek, User
+except ModuleNotFoundError:
+    from schemas import ContributorStats, Repo, Stargazer, StarWeek, User
 
 API_URL = "https://api.github.com"
 DEFAULT_CACHE_DIR = Path(__file__).parents[2] / ".cache" / "github"
@@ -201,7 +205,7 @@ class GitHubClient:
         headers = {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
 
         # Use the first token we can find. With a token we get 5,000 requests/hour instead of 60.
-        token = self._token or os.environ.get("GITHUB_TOKEN") or await _gh_cli_token()
+        token = await self._resolve_token()
         if token is not None:
             headers["Authorization"] = f"Bearer {token}"
         else:
@@ -212,6 +216,10 @@ class GitHubClient:
         # The semaphore caps how many requests run at once so we don't flood GitHub.
         self._semaphore = asyncio.Semaphore(self._max_concurrent)
         return self
+
+    async def _resolve_token(self) -> str | None:
+        """Returns the first token available from the constructor, the environment, or the GitHub CLI."""
+        return self._token or os.environ.get("GITHUB_TOKEN") or await _gh_cli_token()
 
     async def __aexit__(
         self,
@@ -232,10 +240,14 @@ class GitHubClient:
         self._write_cache(path, payload)
         return payload
 
-    async def _request(
-        self, path: str, allow_retry: bool = True, headers: Mapping[str, str] | None = None
-    ) -> Any:
-        """Issues a GET, retrying with a growing delay if GitHub errors or asks us to slow down."""
+    async def _request(self, path: str, allow_retry: bool = True, headers: Mapping[str, str] | None = None) -> Any:
+        """Issues a GET, retrying with a growing delay if GitHub errors or asks us to slow down.
+
+        A pooled connection occasionally gets closed partway through a large response (seen on
+        ``stats/contributors`` for repos with a long contributor history) under concurrent load;
+        that surfaces as ``aiohttp.ClientPayloadError`` rather than an HTTP error status, so it
+        needs its own retry alongside the rate-limit one.
+        """
         if self._session is None or self._semaphore is None:
             raise RuntimeError("Use GitHubClient as an async context manager: async with GitHubClient() as client")
 
@@ -248,24 +260,24 @@ class GitHubClient:
                     async with self._session.get(f"{API_URL}/{path}", headers=headers) as response:
                         self._record_quota(response.headers)
                         status = response.status
-                        resp_headers = response.headers
+                        res_headers = response.headers
                         body = await response.text()
                 except (aiohttp.ClientError, asyncio.TimeoutError):
                     # Network problem, wait a bit and try again (1s, 2s, 4s, ...).
-                    if attempt == self._max_retries:
+                    if attempt == self._max_retries or not allow_retry:
                         raise
                     await asyncio.sleep(2**attempt)
                     continue
 
-            # 200 OK means it worked, so we're done.
+            # 200 means it worked, so we're done.
             if status == 200:
                 return json.loads(body)
 
             # Something went wrong. Work out how long to wait, or give up if retrying won't help.
-            if status in (403, 429) and "Retry-After" in resp_headers:
+            if status in (403, 429) and "Retry-After" in res_headers:
                 # GitHub told us exactly how long to wait.
-                wait = float(resp_headers["Retry-After"])
-            elif status in (403, 429) and resp_headers.get("x-ratelimit-remaining") == "0":
+                wait = float(res_headers["Retry-After"])
+            elif status in (403, 429) and res_headers.get("x-ratelimit-remaining") == "0":
                 # We ran out of requests, wait until the quota resets (plus a second to be safe).
                 wait = max(self._reset_at - time.time(), 0) + 1
             elif status >= 500:
@@ -280,7 +292,7 @@ class GitHubClient:
             print(f"Got {status} for {path}, retrying in {wait:.0f}s")
             await asyncio.sleep(wait)
 
-        raise RuntimeError("unreachable")
+        raise RuntimeError("unreachable")  # The loop always returns or raises before this.
 
     def _record_quota(self, headers: Mapping[str, str]) -> None:
         """Stores how much of the hourly quota is left, per GitHub's response headers."""
@@ -330,14 +342,18 @@ class GitHubClient:
             return
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         # Write to a temp file first so a crash can't leave a broken cache file.
-        temp_path = cache_path.with_suffix(".tmp")
-        with temp_path.open("w", encoding="utf-8") as file:
+        temporary_path = cache_path.with_name(f"{cache_path.name}.tmp")
+        with temporary_path.open("w", encoding="utf-8") as file:
             json.dump(payload, file)
-        temp_path.replace(cache_path)  # Renaming is instant, so the real file is never half-written.
+        temporary_path.replace(cache_path)  # Atomic, so an interrupted run never leaves a truncated response behind.
 
 
 async def _gh_cli_token() -> str | None:
-    """Returns the token from ``gh auth token``, or ``None`` if the GitHub CLI is missing or not logged in."""
+    """Returns the token from ``gh auth token``, or ``None`` if the GitHub CLI is missing or not logged in.
+
+    Returns:
+        The token, or ``None`` when the GitHub CLI is not installed or not logged in.
+    """
     try:
         # Run in a thread because asyncio's own subprocess support fails on Windows inside Jupyter.
         result = await asyncio.to_thread(subprocess.run, ["gh", "auth", "token"], capture_output=True, text=True)
