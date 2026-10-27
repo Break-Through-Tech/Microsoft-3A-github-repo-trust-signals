@@ -88,18 +88,18 @@ class RepoRecord:
     star_weeks: list[StarWeek] | None
 
 
-def read_snapshot_time() -> datetime:
+def read_snapshot_time(snapshot_path: Path = SNAPSHOT_PATH) -> datetime:
     """Returns when the raw snapshot was started, creating the marker on the first fetch.
 
     Ages are measured from this moment rather than the current time, which is what makes a rebuild from the same raw
     data produce the same numbers on any day.
     """
-    if SNAPSHOT_PATH.exists():
-        with SNAPSHOT_PATH.open(encoding="utf-8") as file:
+    if snapshot_path.exists():
+        with snapshot_path.open(encoding="utf-8") as file:
             return datetime.fromisoformat(json.load(file)["as_of"])
     as_of = datetime.now(UTC).replace(microsecond=0)
-    SNAPSHOT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with SNAPSHOT_PATH.open("w", encoding="utf-8") as file:
+    snapshot_path.parent.mkdir(parents=True, exist_ok=True)
+    with snapshot_path.open("w", encoding="utf-8") as file:
         json.dump({"as_of": as_of.isoformat()}, file)
     return as_of
 
@@ -131,11 +131,11 @@ async def fetch_record(client: GitHubClient, semaphore: asyncio.Semaphore, liste
     return RepoRecord(listed_as, label, repo, contributors, top_users, owner, star_weeks)
 
 
-async def collect() -> list[RepoRecord]:
-    """Fetches every labeled repo, failing loudly rather than silently dropping any of them."""
-    labeled = load_labeled_repos()
+async def collect(repos: list[tuple[str, str]] | None = None, raw_dir: Path = RAW_DIR) -> list[RepoRecord]:
+    """Fetches every repo (the labeled ones by default), failing loudly rather than silently dropping any of them."""
+    labeled = repos if repos is not None else load_labeled_repos()
     semaphore = asyncio.Semaphore(FETCH_CONCURRENCY)
-    async with GitHubClient(cache_dir=RAW_DIR, cache_ttl_seconds=math.inf) as client:
+    async with GitHubClient(cache_dir=raw_dir, cache_ttl_seconds=math.inf) as client:
         results = await asyncio.gather(
             *(fetch_record(client, semaphore, repo, label) for repo, label in labeled), return_exceptions=True
         )
@@ -149,7 +149,7 @@ async def collect() -> list[RepoRecord]:
             failures.append(f"{repo}: {result!r}")
     if failures:
         raise RuntimeError(
-            f"{len(failures)} of {len(labeled)} repos failed. Completed responses are saved in {RAW_DIR}, so "
+            f"{len(failures)} of {len(labeled)} repos failed. Completed responses are saved in {raw_dir}, so "
             "rerunning resumes where this stopped.\n" + "\n".join(failures)
         )
     return records
