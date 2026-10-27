@@ -1,0 +1,281 @@
+found_in_search,search_rank,full_name,stars,forks,created,pushed,owner_type,archived,language,license,description,excluded_reason,selected
+A_established_active,1,public-apis/public-apis,492444,54859,2016-03-20,2026-10-24,Organization,False,Python,MIT,A collective list of free APIs,"curated list, tutorial, book, or translation",False
+A_established_active,2,freeCodeCamp/freeCodeCamp,457988,48661,2014-12-24,2026-10-26,Organization,False,TypeScript,BSD-3-Clause,"freeCodeCamp.org's open-source codebase and curriculum. Learn math, programming, and compu",,True
+A_established_active,3,EbookFoundation/free-programming-books,400209,67013,2013-10-11,2026-10-26,Organization,False,Python,CC-BY-4.0,:books: Freely available programming books,"curated list, tutorial, book, or translation",False
+A_established_active,4,nilbuild/developer-roadmap,370488,45154,2017-03-15,2026-10-26,User,False,TypeScript,NOASSERTION,"Interactive roadmaps, guides and other educational content to help developers grow in thei","curated list, tutorial, book, or translation",False
+A_established_active,5,awesome-selfhosted/awesome-selfhosted,330748,15577,2015-06-01,2026-10-22,Organization,False,,NOASSERTION,A list of Free Software network services and web applications which can be hosted on your ,"no code language (documentation or text), so not a software project",False
+A_established_active,6,vinta/awesome-python,330491,29014,2014-06-27,2026-10-26,User,False,Python,NOASSERTION,"The definitive list that answers ""I want to do X in Python, which tool should I use?""","curated list, tutorial, book, or translation",False
+A_established_active,7,practical-tutorials/project-based-learning,288121,36726,2017-04-12,2026-10-26,Organization,False,Python,MIT,Curated list of project-based tutorials,"curated list, tutorial, book, or translation",False
+A_established_active,8,torvalds/linux,253595,67407,2011-09-04,2026-10-26,User,False,C,NOASSERTION,Linux kernel source tree,already in the labeled dataset,False
+A_established_active,9,react/react,251887,51580,2013-05-24,2026-10-26,Organization,False,JavaScript,MIT,The library for web and native user interfaces.,already in the labeled dataset,False
+A_established_active,10,TheAlgorithms/Python,225552,51221,2016-07-16,2026-10-20,Organization,False,Python,MIT,All Algorithms implemented in Python,,True
+A_established_active,11,tensorflow/tensorflow,201284,78704,2015-11-07,2026-10-27,Organization,False,C++,Apache-2.0,An Open Source Machine Learning Framework for Everyone,already in the labeled dataset,False
+A_established_active,12,microsoft/vscode,194353,44870,2015-09-03,2026-10-27,Organization,False,TypeScript,MIT,Visual Studio Code,already in the labeled dataset,False
+A_established_active,13,avelino/awesome-go,190528,13668,2014-07-06,2026-10-26,User,False,Go,MIT,"A curated list of awesome Go frameworks, libraries and software","curated list, tutorial, book, or translation",False
+A_established_active,14,ohmyzsh/ohmyzsh,190178,28619,2009-08-28,2026-10-25,Organization,False,Shell,MIT,"🙃   A delightful community-driven (with 2,500+ contributors) framework for managing your z",,True
+A_established_active,15,flutter/flutter,180383,33304,2015-03-06,2026-10-27,Organization,False,Dart,BSD-3-Clause,Flutter makes it easy and fast to build beautiful apps for mobile and beyond,,True
+A_established_active,16,twbs/bootstrap,175016,78513,2011-07-29,2026-10-26,Organization,False,MDX,MIT,"The most popular HTML, CSS, and JavaScript framework for developing responsive, mobile fir","no code language (documentation or text), so not a software project",False
+A_established_active,17,Genymobile/scrcpy,153220,14057,2017-11-21,2026-10-26,Organization,False,C,Apache-2.0,Display and control your Android device,,False
+A_established_active,18,vercel/next.js,143307,34129,2016-10-05,2026-10-27,Organization,False,JavaScript,MIT,The React Framework,,False
+A_established_active,19,ripienaar/free-for-dev,140070,14869,2015-03-18,2026-10-26,User,False,HTML,,"A list of SaaS, PaaS and IaaS offerings that have free tiers of interest to devops and inf","curated list, tutorial, book, or translation",False
+A_established_active,20,golang/go,139626,21557,2014-08-19,2026-10-27,Organization,False,Go,BSD-3-Clause,The Go programming language,already in the labeled dataset,False
+A_established_active,21,Chalarangelo/30-seconds-of-code,129350,12488,2017-11-29,2026-10-26,User,False,JavaScript,CC-BY-4.0,Coding articles to level up your development skills,,False
+A_established_active,22,kubernetes/kubernetes,128722,46362,2014-06-06,2026-10-27,Organization,False,Go,Apache-2.0,Production-Grade Container Scheduling and Management,already in the labeled dataset,False
+A_established_active,23,react/react-native,126800,25390,2015-01-09,2026-10-27,Organization,False,C++,MIT,A framework for building native applications using React,,False
+A_established_active,24,electron/electron,123567,17744,2013-04-12,2026-10-27,Organization,False,C++,MIT,":electron: Build cross-platform desktop apps with JavaScript, HTML, and CSS",,False
+A_established_active,25,nodejs/node,123129,39237,2014-11-26,2026-10-27,Organization,False,JavaScript,NOASSERTION,Node.js JavaScript runtime ✨🐢🚀✨,already in the labeled dataset,False
+A_established_active,26,rust-lang/rust,120860,17997,2010-06-16,2026-10-27,Organization,False,Rust,Apache-2.0,Empowering everyone to build reliable and efficient software.,already in the labeled dataset,False
+A_established_active,27,godotengine/godot,119129,27217,2014-01-04,2026-10-26,Organization,False,C++,MIT,Godot Engine – Multi-platform 2D and 3D game engine,,False
+A_established_active,28,jaywcjlove/awesome-mac,117119,9733,2016-07-17,2026-10-27,User,False,Swift,CC0-1.0, This project is dedicated to collecting high-quality macOS software and organizing them ,,False
+A_established_active,29,mrdoob/three.js,117002,36750,2010-03-23,2026-10-26,User,False,JavaScript,MIT,JavaScript 3D Library.,,False
+A_established_active,30,d3/d3,113804,22653,2010-09-27,2026-10-21,Organization,False,Shell,ISC,"Bring data to life with SVG, Canvas and HTML. :bar_chart::chart_with_upwards_trend::tada:",,False
+A_established_active,31,microsoft/TypeScript,111629,16017,2014-06-17,2026-10-26,Organization,False,Go,Apache-2.0,TypeScript is a superset of JavaScript that compiles to clean JavaScript output.,already in the labeled dataset,False
+A_established_active,32,fatedier/frp,110153,15257,2015-12-21,2026-10-23,User,False,Go,Apache-2.0,A fast reverse proxy to help you expose a local server behind a NAT or firewall to the int,,False
+A_established_active,33,axios/axios,109309,11951,2014-08-18,2026-10-26,Organization,False,JavaScript,MIT,Promise based HTTP client for the browser and node.js,,False
+A_established_active,34,microsoft/terminal,105247,9685,2017-08-11,2026-10-26,Organization,False,C++,MIT,"The new Windows Terminal and the original Windows console host, all in the same place!",already in the labeled dataset,False
+A_established_active,35,pytorch/pytorch,105105,31795,2016-08-13,2026-10-27,Organization,False,Python,NOASSERTION,Tensors and Dynamic neural networks in Python with strong GPU acceleration,already in the labeled dataset,False
+A_established_active,36,neovim/neovim,103199,7257,2014-01-31,2026-10-26,Organization,False,Vim Script,NOASSERTION,Vim-fork focused on extensibility and usability,already in the labeled dataset,False
+A_established_active,37,angular/angular,101102,29576,2014-09-18,2026-10-27,Organization,False,TypeScript,MIT,Deliver web apps with confidence 🚀,already in the labeled dataset,False
+A_established_active,38,ant-design/ant-design,99909,54649,2015-04-24,2026-10-26,Organization,False,TypeScript,MIT,An enterprise-class UI design language and React UI library,,False
+A_established_active,39,mui/material-ui,99281,32497,2014-08-18,2026-10-27,Organization,False,JavaScript,MIT,Material UI: Comprehensive React component library that implements Google's Material Desig,,False
+A_established_active,40,tailwindlabs/tailwindcss,98129,7657,2017-10-06,2026-10-19,Organization,False,TypeScript,MIT,A utility-first CSS framework for rapid UI development.,,False
+B_established_quiet,1,prakhar1989/awesome-courses,72270,8462,2014-11-15,2023-05-04,User,False,,,:books: List of awesome university courses for learning Computer Science!,"no code language (documentation or text), so not a software project",False
+B_established_quiet,2,resume/resume.github.com,62917,1377,2011-02-06,2023-02-15,Organization,False,JavaScript,,Resumes generated using the GitHub informations,"curated list, tutorial, book, or translation",False
+B_established_quiet,3,Avik-Jain/100-Days-Of-ML-Code,51965,11634,2018-07-05,2023-12-29,User,False,,MIT,100 Days of ML Coding,"no code language (documentation or text), so not a software project",False
+B_established_quiet,4,NARKOZ/hacker-scripts,49858,6627,2015-11-21,2023-10-23,User,False,JavaScript,,Based on a true story,,True
+B_established_quiet,5,wg/wrk,40424,3028,2012-03-20,2023-12-30,User,False,C,NOASSERTION,Modern HTTP benchmarking tool,,True
+B_established_quiet,6,floodsung/Deep-Learning-Papers-Reading-Roadmap,39593,7252,2016-10-14,2022-11-27,User,False,Python,,Deep Learning papers reading roadmap for anyone who are eager to learn this amazing tech!,"curated list, tutorial, book, or translation",False
+B_established_quiet,7,exacity/deeplearningbook-chinese,37970,9168,2016-12-07,2019-12-03,Organization,False,TeX,,Deep Learning Book Chinese Translation,"no code language (documentation or text), so not a software project",False
+B_established_quiet,8,FreeCodeCampChina/freecodecamp.cn,37790,1414,2016-09-30,2023-07-16,Organization,False,CSS,NOASSERTION,FCC China open source codebase and curriculum. Learn to code and help nonprofits.,,False
+B_established_quiet,9,lib-pku/libpku,34136,8180,2018-11-22,2022-01-05,Organization,False,TeX,,贵校课程资料民间整理,"no code language (documentation or text), so not a software project",False
+B_established_quiet,10,eriklindernoren/ML-From-Scratch,33134,5508,2017-02-05,2023-10-15,User,False,Python,MIT,Machine Learning From Scratch. Bare bones NumPy implementations of machine learning models,,False
+B_established_quiet,11,yunjey/pytorch-tutorial,32515,8196,2017-03-10,2023-08-15,User,False,Python,MIT,PyTorch Tutorial for Deep Learning Researchers,"curated list, tutorial, book, or translation",False
+B_established_quiet,12,jobbole/awesome-python-cn,30679,7907,2015-11-03,2022-08-29,Organization,False,Makefile,NOASSERTION,Python资源大全中文版，包括：Web框架、网络爬虫、模板引擎、数据库、数据可视化、图片处理等，由「开源前哨」和「Python开发者」微信公号团队维护更新。,,False
+B_established_quiet,13,ityouknow/spring-boot-examples,30447,12110,2016-11-05,2023-11-18,User,False,Java,,about learning Spring Boot via examples. Spring Boot 教程、技术栈示例代码，快速简单上手教程。 ,,False
+B_established_quiet,14,aosabook/500lines,29579,5789,2013-11-04,2023-08-19,User,False,JavaScript,NOASSERTION,500 Lines or Less,,False
+B_established_quiet,15,react-boilerplate/react-boilerplate,29461,5968,2015-02-18,2023-03-23,Organization,False,JavaScript,MIT,"🔥 A highly scalable, offline-first foundation with the best developer experience and a foc",,False
+B_established_quiet,16,IanLunn/Hover,29412,5594,2014-01-02,2023-10-28,User,False,SCSS,NOASSERTION,"A collection of CSS3 powered hover effects to be applied to links, buttons, logos, SVG, fe","curated list, tutorial, book, or translation",False
+B_established_quiet,17,lukehoban/es6features,28994,2768,2014-03-03,2023-01-27,User,False,,MIT,Overview of ECMAScript 6 features,"no code language (documentation or text), so not a software project",False
+B_established_quiet,18,nagadomi/waifu2x,28239,2658,2015-05-17,2023-05-04,User,False,Lua,MIT,Image Super-Resolution for Anime-Style Art,,False
+B_established_quiet,19,Advanced-Frontend/Daily-Interview-Question,27345,3223,2019-01-19,2020-11-09,Organization,False,JavaScript,,我是依扬（木易杨），公众号「高级前端进阶」作者，每天搞定一道前端大厂面试题，祝大家天天进步，一年后会看到不一样的自己。,,False
+B_established_quiet,20,houshanren/hangzhou_house_knowledge,26855,5158,2018-02-24,2022-02-28,User,False,CSS,,2017年买房经历总结出来的买房购房知识分享给大家，希望对大家有所帮助。买房不易，且买且珍惜。Sharing the knowledge of buy an own house t,,False
+B_established_quiet,21,littlecodersh/ItChat,26452,5591,2016-01-19,2023-09-28,User,False,Python,MIT,A complete and graceful API for Wechat. 微信个人号接口、微信机器人及命令行微信，三十行即可自定义个人号机器人。,,False
+B_established_quiet,22,datasciencemasters/go,26346,6092,2013-08-14,2023-12-03,Organization,False,,Unlicense,The Open Source Data Science Masters,"no code language (documentation or text), so not a software project",False
+B_established_quiet,23,rstacruz/nprogress,26345,1765,2013-08-20,2022-06-04,User,False,JavaScript,MIT,"For slim progress bars like on YouTube, Medium, etc",,False
+B_established_quiet,24,JakeWharton/butterknife,25320,4532,2013-03-05,2023-09-02,User,False,Java,Apache-2.0,Bind Android views and callbacks to fields and methods.,,False
+B_established_quiet,25,HarisIqbal88/PlotNeuralNet,25051,3060,2018-07-24,2023-08-21,User,False,TeX,MIT,Latex code for making neural networks diagrams,"no code language (documentation or text), so not a software project",False
+B_established_quiet,26,checkcheckzz/system-design-interview,23861,5277,2014-05-18,2023-04-03,User,False,,,System design interview for IT companies,"no code language (documentation or text), so not a software project",False
+B_established_quiet,27,alibaba/flutter-go,23620,3746,2019-01-08,2023-12-11,Organization,False,Dart,NOASSERTION,flutter 开发者帮助 APP，包含 flutter 常用 140+ 组件的demo 演示与中文文档,,False
+B_established_quiet,28,benweet/stackedit,23102,2811,2013-03-24,2023-07-04,User,False,JavaScript,Apache-2.0,In-browser Markdown editor,,False
+B_established_quiet,29,fouber/blog,22550,2325,2014-04-25,2019-11-12,User,False,,,没事写写文章，喜欢的话请点star，想订阅点watch，千万别fork！,"no code language (documentation or text), so not a software project",False
+B_established_quiet,30,SamyPesse/How-to-Make-a-Computer-Operating-System,22401,3439,2013-11-29,2021-12-16,User,False,C,Apache-2.0,How to Make a Computer Operating System in C++,,False
+B_established_quiet,31,t4t5/sweetalert,22247,2740,2014-09-30,2023-04-15,User,False,TypeScript,MIT,"A beautiful replacement for JavaScript's ""alert""",,False
+B_established_quiet,32,izackwu/TeachYourselfCS-CN,22203,3316,2019-10-04,2023-01-18,User,False,,CC-BY-SA-4.0,TeachYourselfCS 的中文翻译 |  A Chinese translation of TeachYourselfCS,"no code language (documentation or text), so not a software project",False
+B_established_quiet,33,dennybritz/reinforcement-learning,22165,6104,2016-08-24,2023-07-13,User,False,Jupyter Notebook,MIT,"Implementation of Reinforcement Learning Algorithms. Python, OpenAI Gym, Tensorflow. Exerc",,False
+B_established_quiet,34,TeamStuQ/skill-map,22050,4393,2015-11-17,2023-01-20,Organization,False,HTML,,程序员技能图谱,,False
+B_established_quiet,35,eligrey/FileSaver.js,21964,4282,2011-07-15,2023-03-01,User,False,JavaScript,NOASSERTION,An HTML5 saveAs() FileSaver implementation,,False
+B_established_quiet,36,julycoding/The-Art-Of-Programming-By-July-2nd,21504,6946,2013-12-14,2023-02-26,User,False,C,,本项目曾冲到全球第一，干货集锦见本页面最底部，另完整精致的纸质版《编程之法：面试和算法心得》已在京东/当当上销售,,False
+B_established_quiet,37,futurice/android-best-practices,20408,3291,2014-07-29,2021-10-01,Organization,False,,NOASSERTION,"Do's and Don'ts for Android development, by Futurice developers","no code language (documentation or text), so not a software project",False
+B_established_quiet,38,programthink/books,20342,3514,2015-06-01,2022-08-16,User,False,,CC0-1.0,【编程随想】收藏的电子书清单（多个学科，含下载链接）,"no code language (documentation or text), so not a software project",False
+B_established_quiet,39,afshinea/stanford-cs-229-machine-learning,20342,4264,2018-08-04,2020-05-20,User,False,,MIT,VIP cheatsheets for Stanford's CS 229 Machine Learning,"no code language (documentation or text), so not a software project",False
+B_established_quiet,40,wenyan-lang/wenyan,20286,1097,2019-12-08,2023-10-20,Organization,False,TypeScript,MIT,文言文編程語言 A programming language for the ancient Chinese.,,False
+B2_established_archived,1,DopplerHQ/awesome-interview-questions,85226,9586,2015-11-28,2024-07-29,Organization,True,,,:octocat: A curated awesome list of lists of interview questions. Feel free to contribute!,"no code language (documentation or text), so not a software project",False
+B2_established_archived,2,sdmg15/Best-websites-a-programmer-should-visit,76195,8593,2017-03-05,2025-09-16,User,True,,MIT,:link: Some useful websites for programmers.,"no code language (documentation or text), so not a software project",False
+B2_established_archived,3,localstack/localstack,65135,4813,2016-10-25,2026-03-23,Organization,True,Python,NOASSERTION,💻 A fully functional local AWS cloud stack. Develop and test your cloud & Serverless apps ,,True
+B2_established_archived,4,minio/minio,61300,8233,2015-01-14,2026-04-24,Organization,True,Go,AGPL-3.0,"MinIO is a high-performance, S3 compatible object store, open sourced under GNU AGPLv3 lic",,True
+B2_established_archived,5,atom/atom,60710,17161,2012-01-20,2023-01-03,Organization,True,JavaScript,MIT,:atom: The hackable text editor,,False
+B2_established_archived,6,angular/angular.js,58471,26929,2010-01-06,2024-04-12,Organization,True,JavaScript,MIT,AngularJS - HTML enhanced for web apps!,,False
+B2_established_archived,7,GitSquared/edex-ui,45046,3226,2017-01-28,2021-10-19,User,True,JavaScript,GPL-3.0,"A cross-platform, customizable science fiction terminal emulator with advanced monitoring ",,False
+B2_established_archived,8,dylanaraps/pure-bash-bible,41708,3651,2018-06-13,2023-11-28,User,True,Shell,MIT,📖 A collection of pure bash alternatives to external processes.,"curated list, tutorial, book, or translation",False
+B2_established_archived,9,google-research/bert,40040,9654,2018-10-25,2024-07-23,Organization,True,Python,Apache-2.0,TensorFlow code and pre-trained models for BERT,,False
+B2_established_archived,10,openai/gym,37237,8665,2016-04-27,2026-03-26,Organization,True,Python,NOASSERTION,A toolkit for developing and comparing reinforcement learning algorithms.,,False
+B2_established_archived,11,slatedocs/slate,36004,359,2013-09-13,2026-02-01,Organization,True,,,Beautiful static documentation for your API,"no code language (documentation or text), so not a software project",False
+B2_established_archived,12,filebrowser/filebrowser,35888,4168,2015-09-11,2026-07-31,Organization,True,Go,Apache-2.0,File Browser provides a file managing interface within a specified directory and it can be,,False
+B2_established_archived,13,nativefier/nativefier,35229,2223,2015-07-05,2023-09-29,Organization,True,TypeScript,MIT,Make any web page a desktop application,,False
+B2_established_archived,14,nodejs/node-v0.x-archive,34265,7198,2009-05-27,2024-08-15,Organization,True,,,Moved to https://github.com/nodejs/node,"no code language (documentation or text), so not a software project",False
+B2_established_archived,15,testerSunshine/12306,34039,9570,2017-05-17,2023-04-02,User,True,Python,MIT,12306智能刷票，订票,,False
+B2_established_archived,16,atlassian/react-beautiful-dnd,33903,2688,2017-08-09,2025-08-18,Organization,True,JavaScript,NOASSERTION,Beautiful and accessible drag and drop for lists with React,"curated list, tutorial, book, or translation",False
+B2_established_archived,17,alibaba/easyexcel,33572,7529,2018-02-06,2024-10-29,Organization,True,Java,Apache-2.0,快速、简洁、解决大文件内存溢出的java处理Excel工具,,False
+B2_established_archived,18,AFNetworking/AFNetworking,33338,10595,2011-05-31,2023-01-17,Organization,True,Objective-C,MIT,"A delightful networking framework for iOS, macOS, watchOS, and tvOS.",,False
+B2_established_archived,19,adobe/brackets,32979,7429,2011-12-07,2022-06-12,Organization,True,JavaScript,MIT,"An open source code editor for the web, written in JavaScript, HTML and CSS.",,False
+B2_established_archived,20,microsoft/MS-DOS,32261,4690,2018-06-25,2024-04-25,Organization,True,Assembly,MIT,"The original sources of MS-DOS 1.25, 2.0, and 4.0 for reference purposes",,False
+B2_established_archived,21,facebookresearch/fairseq,32213,6666,2017-08-29,2025-09-30,Organization,True,Python,MIT,Facebook AI Research Sequence-to-Sequence Toolkit written in Python.,,False
+B2_established_archived,22,herrbischoff/awesome-macos-command-line,31051,1425,2015-09-22,2026-03-04,User,True,,,Use your macOS terminal shell to do awesome things.,"no code language (documentation or text), so not a software project",False
+B2_established_archived,23,blueimp/jQuery-File-Upload,30690,7704,2010-12-01,2026-04-08,User,True,PHP,MIT,"File Upload widget with multiple file selection, drag&drop support, progress bar, validati",,False
+B2_established_archived,24,Binaryify/NeteaseCloudMusicApi,30239,16004,2016-06-22,2024-02-28,User,True,,,网易云音乐 Node.js API service,"no code language (documentation or text), so not a software project",False
+B2_established_archived,25,dnSpy/dnSpy,29661,5675,2015-07-01,2020-12-20,Organization,True,C#,,.NET debugger and assembly editor,,False
+B2_established_archived,26,ariya/phantomjs,29427,5649,2010-12-27,2022-11-26,User,True,C++,BSD-3-Clause,Scriptable Headless Browser,,False
+B2_established_archived,27,codemirror/codemirror5,27202,4922,2011-01-14,2026-04-16,Organization,True,JavaScript,MIT,"In-browser code editor (version 5, legacy)",,False
+B2_established_archived,28,Igglybuff/awesome-piracy,26915,2292,2018-10-09,2023-06-18,User,True,HTML,CC0-1.0,A curated list of awesome warez and piracy links,"curated list, tutorial, book, or translation",False
+B2_established_archived,29,Homebrew/legacy-homebrew,26808,10955,2009-05-20,2023-05-04,Organization,True,,,💀 The former home of Homebrew/homebrew (deprecated),"no code language (documentation or text), so not a software project",False
+B2_established_archived,30,mozilla/DeepSpeech,26775,4072,2016-06-02,2025-06-19,Organization,True,C++,MPL-2.0,"DeepSpeech is an open source embedded (offline, on-device) speech-to-text engine which can",,False
+B2_established_archived,31,nvie/gitflow,26768,2609,2010-01-20,2025-10-14,User,True,Shell,NOASSERTION,Git extensions to provide high-level repository operations for Vincent Driessen's branchin,,False
+B2_established_archived,32,fzaninotto/Faker,26617,3562,2011-10-14,2024-03-20,User,True,PHP,MIT,Faker is a PHP library that generates fake data for you,,False
+B2_established_archived,33,facebookresearch/fastText,26519,4832,2016-07-16,2024-03-22,Organization,True,HTML,MIT,Library for fast text representation and classification.,,False
+B2_established_archived,34,facebookresearch/Detectron,26350,5377,2017-10-05,2023-11-20,Organization,True,Python,Apache-2.0,"FAIR's research platform for object detection research, implementing popular algorithms li",,False
+B2_established_archived,35,luong-komorebi/Awesome-Linux-Software,25649,2287,2016-08-06,2026-05-03,User,True,HTML,,🐧 A list of awesome Linux softwares ,"curated list, tutorial, book, or translation",False
+B2_established_archived,36,alibaba/fastjson,25568,6381,2011-11-03,2026-07-29,Organization,True,Java,Apache-2.0,"FASTJSON 2.0.x has been released, faster and more secure, recommend you upgrade.",,False
+B2_established_archived,37,HumanSignal/labelImg,25034,6592,2015-09-17,2024-06-07,Organization,True,Python,MIT,LabelImg is now part of the Label Studio community. The popular image annotation tool crea,,False
+B2_established_archived,38,openai/gpt-2,25009,5958,2019-02-11,2024-08-14,Organization,True,Python,NOASSERTION,"Code for the paper ""Language Models are Unsupervised Multitask Learners""",,False
+B2_established_archived,39,leereilly/games,24986,3574,2012-01-05,2025-09-13,User,True,,,"Archived — A list of games, add-ons, maps, etc. hosted on GitHub. Any genre. Any platform.","no code language (documentation or text), so not a software project",False
+B2_established_archived,40,nylas/nylas-mail,24732,1341,2014-10-16,2026-06-25,Organization,True,JavaScript,MIT,:love_letter: An extensible desktop mail app built on the modern web.  Forks welcome!,,False
+C_new_org,1,cloudflare/moltworker,9946,1706,2026-01-27,2026-05-09,Organization,False,TypeScript,Apache-2.0,"Run OpenClaw, (formerly Moltbot, formerly Clawdbot) on Cloudflare Workers",,True
+C_new_org,2,KytyPS5/KytyPS5,9924,1274,2026-06-09,2026-10-26,Organization,False,C++,GPL-2.0,"PlayStation 5 translation layer for Windows, Linux and macOS","curated list, tutorial, book, or translation",False
+C_new_org,3,YuJunZhiXue/dsh-purge,9922,1880,2026-08-19,2026-10-26,User,False,JavaScript,Apache-2.0,DeepSeek Harness 破甲：让所有模型都能破甲，不同模型可换不同提示词；默认提示词面向国模「小码酱」。Jailbreak for every model — swap ,owner is not an organization,False
+C_new_org,4,pixel-agents-hq/pixel-agents,9913,1674,2026-02-08,2026-10-26,Organization,False,TypeScript,MIT,Pixel office.,,False
+C_new_org,5,android/skills,9835,635,2026-03-16,2026-10-26,Organization,False,Kotlin,Apache-2.0,,,False
+C_new_org,6,anthropics/claude-for-legal,9797,1918,2026-04-21,2026-10-23,Organization,False,Python,Apache-2.0,A suite of plugins for legal workflows,,False
+C_new_org,7,lnkiai/m3e-canvas,9789,1073,2026-09-02,2026-10-22,User,False,TypeScript,MIT,Sketch Material 3 Expressive screens in the browser and turn them into vibe-coding prompts,owner is not an organization,False
+C_new_org,8,Zagitta/gpu-unlock,9774,977,2026-10-18,2026-10-27,User,False,C,,Unlock FP/BF16 instruction issue rate on Nvidia 3000's cards to their professional equival,owner is not an organization,False
+C_new_org,9,ChinaSiro/claude-code-sourcemap,9723,14514,2026-03-31,2026-03-31,User,False,TypeScript,,,owner is not an organization,False
+C_new_org,10,cloudflare/computer,9721,576,2026-06-05,2026-10-26,Organization,False,TypeScript,MIT,Give your agent a computer 👾,,True
+C_new_org,11,MakazhanAlpamys/Soup,9700,1589,2026-02-20,2026-10-26,User,False,Python,Apache-2.0,Fine-tune LLMs from one YAML. Layer streaming trains an 8B model on a 4 GB laptop GPU.,owner is not an organization,False
+C_new_org,12,modem-dev/hunk,9694,324,2026-03-17,2026-10-25,Organization,False,TypeScript,MIT,Review-first terminal diff viewer for agentic coders,,False
+C_new_org,13,Tencent/BrowserSkill,9626,693,2026-06-22,2026-10-26,Organization,False,TypeScript,MIT,"Let AI agents use your real, logged-in browser without interrupting your work. CLI + exten",,False
+C_new_org,14,zhu1090093659/dsh-web,9587,592,2026-08-12,2026-10-27,User,False,TypeScript,Apache-2.0,DeepSeek Harness (DSH) Web 插件聚合生态 · 万物皆插件，通过创意工坊分发｜｜DeepSeek Harness (DSH) Web Plugin Aggr,owner is not an organization,False
+C_new_org,15,jaredpalmer/kev,9573,655,2026-09-17,2026-10-26,User,False,Python,Apache-2.0,Jev-like family of decision models built on top of Qwen3.5/3.8 you can train and run on yo,owner is not an organization,False
+C_new_org,16,pacifio/atlas,9548,374,2026-05-14,2026-10-26,User,False,TypeScript,Apache-2.0,"Source control for agents. Use multiple coding agents, track their changes and query them ",owner is not an organization,False
+C_new_org,17,GoogleCloudPlatform/knowledge-catalog,9544,810,2026-05-04,2026-10-26,Organization,False,TypeScript,Apache-2.0,Google Cloud Knowledge Catalog Tools and Samples,,False
+C_new_org,18,unicity-sphere/sphere-sdk-connect-example,9503,33,2026-02-14,2026-10-21,Organization,False,TypeScript,,,,True
+C_new_org,19,Nasiko-Labs/nasiko,9502,2055,2026-02-12,2026-10-23,Organization,False,Rust,NOASSERTION,The Open Runtime for AI Agents,,False
+C_new_org,20,SnailSploit/Claude-Red,9443,1255,2026-03-04,2026-10-12,User,False,Python,MIT,claude-red is a curated library of offensive security skills designed for the Claude skill,"curated list, tutorial, book, or translation",False
+C_new_org,21,open-slide/open-slide,9423,683,2026-04-26,2026-10-25,Organization,False,TypeScript,MIT,A slide framework built for agents.,,False
+C_new_org,22,crynta/terax-ai,9397,1040,2026-04-21,2026-10-24,User,False,TypeScript,Apache-2.0,Lightweight (7MB) terminal-first AI-native development environment,owner is not an organization,False
+C_new_org,23,open-pencil/open-pencil,9305,967,2026-02-27,2026-10-26,Organization,False,TypeScript,MIT,AI-native design editor. Open-source Figma alternative.,,False
+C_new_org,24,shadcn/improve,9272,412,2026-06-10,2026-09-12,User,False,,MIT,Use your most capable model to audit your codebase and write plans for cheaper models to e,"no code language (documentation or text), so not a software project",False
+C_new_org,25,eze-is/web-access,9268,659,2026-03-18,2026-10-14,User,False,JavaScript,,给你的本机 Agent（如 Claude Code、Grok Bot 等）装上完整联网能力的 Skill：三层通道调度 + 浏览器 CDP + 并行分治，自动积累站点经验，不断优化,owner is not an organization,False
+C_new_org,26,revfactory/harness,9260,1332,2026-03-26,2026-09-28,User,False,,Apache-2.0,"A meta-skill that designs domain-specific agent teams, defines specialized agents, and gen","no code language (documentation or text), so not a software project",False
+C_new_org,27,nexu-io/html-anything,9251,883,2026-05-11,2026-10-13,Organization,False,HTML,Apache-2.0,"✨ The agentic HTML editor — your local AI agent writes the HTML, you ship it. 🚀 75 Skills ",,True
+C_new_org,28,cloudflare/vinext,9251,461,2026-02-24,2026-10-27,Organization,False,TypeScript,MIT,Vite plugin that reimplements the Next.js API surface — deploy anywhere,,False
+C_new_org,29,crmne/spotifast,9237,541,2026-08-27,2026-10-27,User,False,Rust,MIT,"Spotify, native and fast. One lightweight Rust app for your whole library, local playback,",owner is not an organization,False
+C_new_org,30,codebymitch/TitanBot,9214,14647,2026-01-30,2026-09-03,User,False,JavaScript,MIT,"A powerful, all-in-one Discord assistant built for every server. ",owner is not an organization,False
+C_new_org,31,FareedKhan-dev/kimi-k3-in-c,9193,1502,2026-08-01,2026-10-02,User,False,C,Apache-2.0,A 2.78-trillion-parameter Kimi K3 running inference on a single CPU in 8.24 GB of RAM. Por,owner is not an organization,False
+C_new_org,32,basketikun/infinite-canvas,9188,2152,2026-05-18,2026-10-25,User,False,TypeScript,MIT,面向 AI 创作的开源无限画布工作台，集成 AI 生图、参考图编辑、视频生成、Agent 智能助手、画布编排、对话创作、提示词库与素材管理等能力，支持可视化创作流程与多 Agent,owner is not an organization,False
+C_new_org,33,HarnessMD/munder-difflin,9102,1267,2026-05-31,2026-10-26,Organization,False,TypeScript,MIT,"an open-source alternative to the dots, bots and muses of the world, run an office of clau",,False
+C_new_org,34,dsh-market/dsh-market,9086,351,2026-08-14,2026-10-26,Organization,False,TypeScript,MIT,"The plugin market inside DeepSeek Harness — browse, search, one-click install · DSH 可视化插件市",,False
+C_new_org,35,EpicGames/lore,9039,469,2026-05-21,2026-10-26,Organization,False,Rust,MIT,"Lore is a next-generation, open source version control system",,False
+C_new_org,36,datawhalechina/Agent-Learning-Hub,9035,902,2026-05-17,2026-07-19,Organization,False,HTML,MIT,AI Agent 学习路线与资料库收集,,False
+C_new_org,37,darrylmorley/whatcable,9029,279,2026-05-01,2026-10-13,User,False,Swift,NOASSERTION,"macOS menu bar app that tells you, in plain English, what each USB-C cable plugged into yo",owner is not an organization,False
+C_new_org,38,CoreBunch/Instatic,9022,865,2026-04-30,2026-10-13,Organization,False,TypeScript,MIT,"The open-source alternative to Webflow, Framer and WordPress. Agentic self-hosted visual C",,False
+C_new_org,39,rehan-remade/universal-modder,9020,1000,2026-09-30,2026-10-26,User,False,Python,MIT,"Point Claude at any game. Skills, tools and the fal MCP that let Claude Code mod almost an",owner is not an organization,False
+C_new_org,40,MoonshotAI/Kimi-K3,8996,764,2026-07-27,2026-08-06,Organization,False,,NOASSERTION,Open Frontier Intelligence,"no code language (documentation or text), so not a software project",False
+C0_new_org_hype,1,morluto/rea,391830,98179,2026-04-14,2026-10-27,User,False,TypeScript,MIT,"Reverse engineer anything with agents, from app behavior down to native binaries.",,False
+C0_new_org_hype,2,mattpocock/skills,304094,25594,2026-02-03,2026-10-22,User,False,Shell,MIT,Skills for Real Engineers. Straight from my .agents directory.,,False
+C0_new_org_hype,3,deepseek-ai/deepseek-harness,262618,31745,2026-08-13,2026-10-23,Organization,False,TypeScript,MIT,DeepSeek Harness: Everything is a Plugin.,,False
+C0_new_org_hype,4,multica-ai/andrej-karpathy-skills,224672,22474,2026-01-27,2026-04-20,Organization,False,,,"A single CLAUDE.md file to improve Claude Code behavior, derived from Andrej Karpathy's ob","no code language (documentation or text), so not a software project",False
+C0_new_org_hype,5,ultraworkers/claw-code,194986,107722,2026-03-31,2026-10-23,Organization,False,Rust,MIT,"An agent-managed museum exhibit, built in Rust with Gajae-Code / LazyCodex — developed and",,False
+C0_new_org_hype,6,DietrichGebert/ponytail,177170,9690,2026-06-12,2026-10-18,User,False,JavaScript,MIT,Makes your AI agent think like the laziest senior dev in the room. The best code is the co,,False
+C0_new_org_hype,7,garrytan/gstack,137834,20436,2026-03-11,2026-10-27,User,False,TypeScript,MIT,"Use Garry Tan's exact Claude Code setup: 23 opinionated tools that serve as CEO, Designer,",,False
+C0_new_org_hype,8,Graphify-Labs/graphify,136177,13000,2026-04-03,2026-10-26,Organization,False,Python,Apache-2.0,"Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowled",,False
+C0_new_org_hype,9,VoltAgent/awesome-design-md,123737,13733,2026-03-31,2026-10-14,Organization,False,,MIT,A collection of DESIGN.md files analysis by popular brand design systems. Drop one into yo,"no code language (documentation or text), so not a software project",False
+C0_new_org_hype,10,JuliusBrussee/caveman,115313,6650,2026-04-04,2026-10-26,User,False,Go,Apache-2.0,🪨 why use many token when few token do trick. Viral skill + proxy for coding agents that c,,False
+C0_new_org_hype,11,addyosmani/agent-skills,110821,11588,2026-02-15,2026-10-13,User,False,JavaScript,MIT,Production-grade engineering skills for AI coding agents.,,False
+C0_new_org_hype,12,paperclipai/paperclip,107683,17864,2026-03-02,2026-10-27,Organization,False,TypeScript,MIT,The open-source app everyone uses to manage agents at work,,False
+C0_new_org_hype,13,stablyai/orca,107099,6753,2026-03-17,2026-10-27,Organization,False,TypeScript,MIT,"Orca is the place for working with a fleet of agents (e.g. Grok Bot, Claude Code). Run any",,False
+C0_new_org_hype,14,nexu-io/open-design,104164,11912,2026-04-28,2026-10-27,Organization,False,TypeScript,Apache-2.0,The 1st Collaborative AI Design Agent Workspace. Local-first and open source. Create motio,,False
+C0_new_org_hype,15,Panniantong/Agent-Reach,103642,9189,2026-02-24,2026-10-25,User,False,Python,MIT,"Give your AI agent eyes to see the entire internet. Read & search Twitter, Reddit, YouTube",,False
+C0_new_org_hype,16,Leonxlnx/taste-skill,103018,6963,2026-02-19,2026-10-26,User,False,JavaScript,MIT,"Agent skills that give coding agents taste: art direction, reference images and a browser ",,False
+C0_new_org_hype,17,karpathy/autoresearch,98640,13622,2026-03-06,2026-03-26,User,False,Python,,AI agents running research on single-GPU nanochat training automatically,,False
+C0_new_org_hype,18,odysseus-dev/odysseus,94508,1770,2026-05-31,2026-10-26,Organization,False,Python,AGPL-3.0,Self-hosted AI workspace. ,,False
+C0_new_org_hype,19,tt-a1i/archify,89821,6091,2026-04-15,2026-10-27,User,False,JavaScript,Apache-2.0,"Turn any idea, plan, or codebase into a beautiful interactive diagram. An agent skill for ",,False
+C0_new_org_hype,20,debpalash/VoiceStudio,89317,9852,2026-04-09,2026-10-26,User,False,Python,AGPL-3.0,"VoiceStudio is the open-source, fully-local ElevenLabs alternative — voice cloning, voice ",,False
+C0_new_org_hype,21,Egonex-AI/Understand-Anything,88419,7465,2026-03-15,2026-10-26,Organization,False,TypeScript,MIT,Graphs that teach > graphs that impress. Turn any code into an interactive knowledge graph,,False
+C0_new_org_hype,22,cheaper-inference/OmniRoute,81533,11978,2026-02-13,2026-10-27,Organization,False,TypeScript,MIT,"Never stop coding. Free MIT AI gateway: one endpoint, 375 providers (150+ free), 1,400+ mo",,False
+C0_new_org_hype,23,career-ops-hq/career-ops,77637,14358,2026-04-04,2026-10-26,Organization,False,JavaScript,MIT,"Open-source AI job search agent and job finder: scan job boards, score each job 1-5 agains",,False
+C0_new_org_hype,24,rohitg00/ai-engineering-from-scratch,74374,13036,2026-03-18,2026-10-23,User,False,Python,MIT,Learn AI Engineering! Learn it. Build it. Ship it for others.,,False
+C0_new_org_hype,25,storytold/photocraft,73396,12985,2026-09-30,2026-10-27,Organization,False,Rust,Apache-2.0,"PhotoCraft: An open-source, photo editor written by scratch in pure Rust",,False
+C0_new_org_hype,26,heygen-com/hyperframes,73095,6611,2026-03-10,2026-10-27,Organization,False,TypeScript,Apache-2.0,Write HTML. Render video. Built for agents.,,False
+C0_new_org_hype,27,calesthio/OpenMontage,72188,9389,2026-03-29,2026-10-24,User,False,Python,AGPL-3.0,"World's first open-source, agentic video production system. 12 production pipelines, 100+ ",,False
+C0_new_org_hype,28,eternity4719/HowToLiveBetter,69548,6033,2026-09-07,2026-10-21,Organization,False,HTML,CC-BY-4.0,高性价比人生指南: 长寿防病、急救、省钱理财、法律红线、失业与工伤、医保社保、恋爱婚育、怀孕育儿、创业与做平台合规、出国与技能。每条写明成本、收益、证据等级和原始出处，只引期刊论文,,False
+C0_new_org_hype,29,ai-job-search-dev/ai-job-search,66351,20887,2026-03-18,2026-10-26,Organization,False,Python,MIT,The job search that runs on your machine. AI job application framework built on Claude Cod,,False
+C0_new_org_hype,30,Alishahryar1/free-claude-code,63776,9973,2026-01-28,2026-10-26,User,False,Python,NOASSERTION,"Use Claude Code, Codex, Antigravity, VSCode, Pi, and OpenCode (and 6 other harnesses) for ",,False
+C0_new_org_hype,31,cathrynlavery/diagram-design,61387,3999,2026-04-16,2026-10-26,User,False,HTML,MIT,"Editorial diagram design for Claude Code, Codex, GitHub Copilot, Cursor, Factory Droid, Qo",,False
+C0_new_org_hype,32,bilawalsidhu/gods-eye-view,60432,11789,2026-06-22,2026-10-26,User,False,JavaScript,NOASSERTION,"A spy satellite simulator in your browser, except the data is real. Live open source spati",,False
+C0_new_org_hype,33,MemPalace/mempalace,59751,7584,2026-04-05,2026-10-25,Organization,False,Python,MIT,The best-benchmarked open-source AI memory system. And it's free.,,False
+C0_new_org_hype,34,ayghri/i-have-adhd,58883,3412,2026-05-13,2026-10-19,User,False,Python,MIT,A skill to stop your coding agent from burying the answer. ADHD-friendly output.,,False
+C0_new_org_hype,35,HKUDS/CLI-Anything,57260,5149,2026-03-08,2026-09-22,Organization,False,Python,Apache-2.0,"""CLI-Anything: Making ALL Software Agent-Native"" -- CLI-Hub: https://clianything.cc/",,False
+C0_new_org_hype,36,Imbad0202/academic-research-skills,54030,4134,2026-02-26,2026-10-26,User,False,Python,NOASSERTION,Academic Research Skills for Claude Code: research → write → review → revise → finalize,,False
+C0_new_org_hype,37,chenglou/pretext,50919,2763,2026-03-07,2026-10-15,User,False,TypeScript,NOASSERTION,"Fast, accurate & comprehensive text measurement & layout",,False
+C0_new_org_hype,38,Yuan1z0825/nature-skills,50803,2639,2026-04-24,2026-10-25,User,False,Python,Apache-2.0,符合nature论文学术表达和科研绘图的Skill,,False
+C0_new_org_hype,39,emilkowalski/skills,50145,2920,2026-03-16,2026-10-11,User,False,Markdown,MIT,Skills for Designers and Engineers.,"no code language (documentation or text), so not a software project",False
+C0_new_org_hype,40,HKUDS/nanobot,49426,8686,2026-02-01,2026-10-26,Organization,False,Python,MIT,"Ultra-lightweight, open-source, self-hosted personal AI agent framework in Python with Web",,False
+D_new_viral,1,deepseek-ai/deepseek-harness,262619,31745,2026-08-13,2026-10-23,Organization,False,TypeScript,MIT,DeepSeek Harness: Everything is a Plugin.,owner is not a user,False
+D_new_viral,2,storytold/photocraft,73396,12985,2026-09-30,2026-10-27,Organization,False,Rust,Apache-2.0,"PhotoCraft: An open-source, photo editor written by scratch in pure Rust",owner is not a user,False
+D_new_viral,3,eternity4719/HowToLiveBetter,69548,6033,2026-09-07,2026-10-21,Organization,False,HTML,CC-BY-4.0,高性价比人生指南: 长寿防病、急救、省钱理财、法律红线、失业与工伤、医保社保、恋爱婚育、怀孕育儿、创业与做平台合规、出国与技能。每条写明成本、收益、证据等级和原始出处，只引期刊论文,owner is not a user,False
+D_new_viral,4,boykopovar/AnyPS5,48670,4590,2026-08-03,2026-10-27,User,False,C++,GPL-2.0,Tool for automatic PS5 executables porting to Linux and Windows,,True
+D_new_viral,5,Ebony-Vinyl/dsh-our-free-model,44885,1263,2026-09-24,2026-10-26,User,False,JavaScript,MIT,在 dsh 里装上这个插件即可，无需登录、注册或填 API Key，就能使用包括 DeepSeek V4.1 Flash、Kimi K3 在内的前沿模型——完全免费，不限量。 Al,,True
+D_new_viral,6,Gathin23/cleanyourtv,39365,4724,2026-10-17,2026-10-26,User,False,Python,NOASSERTION,Debloat any Android or Google TV over Wi-Fi and get an Apple TV-style home.,,True
+D_new_viral,7,NandhaKishorM/laya,34409,3082,2026-09-18,2026-10-26,User,False,Python,Apache-2.0,"Non-autoregressive System 1 decision engine. Typed choice, score and yes/no decisions over",,True
+D_new_viral,8,Niko1221/Strata,33770,3617,2026-09-24,2026-10-25,User,False,C++,MIT,Qwen3.8-Flash-Next on any consumer hardware: one-click install for Windows / Linux. Strata,,False
+D_new_viral,9,anywhere-labs/dsh-desktop,33395,1526,2026-08-13,2026-10-27,Organization,False,TypeScript,MIT,为 DeepSeek Harness (DSH) 插件生态打造的现代化桌面端解决方案。万物皆「插件」，桌面本身也是「插件」。,owner is not a user,False
+D_new_viral,10,hypit-ai/hypit,25882,2961,2026-07-29,2026-10-26,Organization,False,TypeScript,NOASSERTION,"Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face",owner is not a user,False
+D_new_viral,11,guillaumemeyer/watermarks-remover,24996,2865,2026-08-11,2026-10-26,User,False,Python,MIT,A privacy-first app that strips AI watermarks from content you own.,,False
+D_new_viral,12,browser-use/jev-ultrafast,23699,1797,2026-09-16,2026-09-30,Organization,False,Python,MIT,Fastest and cheapest web agent,owner is not a user,False
+D_new_viral,13,firecrawl/anydoc,23131,1500,2026-08-03,2026-10-23,Organization,False,Rust,MIT,"Convert Word, PowerPoint, Excel, OpenDocument, RTF, EPUB, CSV, and PDF to clean Markdown. ",owner is not a user,False
+D_new_viral,14,deepseek-ai/DeepInfer,23037,2683,2026-10-16,2026-10-26,Organization,False,Python,Apache-2.0,"DeepInfer: High-performance, large-scale inference framework for DeepSeek models",owner is not a user,False
+D_new_viral,15,yetone/magpie,22644,1793,2026-09-23,2026-10-27,User,False,Go,MIT,"Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",,False
+D_new_viral,16,wheresryan22/anatomy,21084,1707,2026-10-08,2026-10-18,User,False,JavaScript,MIT,"An agent skill for creating detailed, interactive isometric illustrations of real-world ma",,False
+D_new_viral,17,lexmount/moli,20921,561,2026-08-10,2026-10-27,Organization,False,Rust,Apache-2.0,"Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",owner is not a user,False
+D_new_viral,18,awesome-dsh-plugin/awesome-dsh-plugin,20912,5432,2026-08-13,2026-10-26,Organization,False,JavaScript,CC0-1.0,A curated list of plugins for DeepSeek Harness (dsh) · DeepSeek Harness 插件精选列表,"curated list, tutorial, book, or translation",False
+D_new_viral,19,google-research/harness2,20174,1975,2026-10-06,2026-10-14,Organization,False,Python,Apache-2.0,,owner is not a user,False
+D_new_viral,20,storytold/pdfcraft,18055,6887,2026-09-30,2026-10-27,Organization,False,Rust,Apache-2.0,PdfCraft: An open-source PDF reader and editor written by scratch in pure Rust,owner is not a user,False
+D_new_viral,21,robbietilton/Compositor,17952,1776,2026-09-16,2026-10-26,User,False,Swift,MIT,The Photoshop alternative for Mac,,False
+D_new_viral,22,dataelement/dsh-desktop,17039,570,2026-08-13,2026-10-26,Organization,False,JavaScript,MIT,DSHDesktop：DeepSeek Harness Desktop / DeepSeek Harness 桌面版,owner is not a user,False
+D_new_viral,23,storytold/filmcraft,16424,6861,2026-09-30,2026-10-27,Organization,False,Rust,Apache-2.0,"FilmCraft: An open-source, nonlinear video editor written by scratch in pure Rust",owner is not a user,False
+D_new_viral,24,storytold/wordcraft,16233,4432,2026-10-07,2026-10-26,Organization,False,Rust,Apache-2.0,"An open-source, clean-room reimplementation of Microsoft Word in pure Rust",owner is not a user,False
+D_new_viral,25,openai/math,15618,1827,2026-10-06,2026-10-26,Organization,False,Lean,Apache-2.0,,owner is not a user,False
+D_new_viral,26,yc-software/qm,15543,1930,2026-07-29,2026-10-27,Organization,False,TypeScript,MIT,Multiplayer agent harness for work.,owner is not a user,False
+D_new_viral,27,google/artemis,15036,1635,2026-08-13,2026-10-01,Organization,False,Python,Apache-2.0,ARTEMIS turns natural-language instructions into reliable Android automation. It automates,owner is not a user,False
+D_new_viral,28,Droid-Deck/DroidDeck,14913,765,2026-09-24,2026-10-27,Organization,False,Kotlin,GPL-3.0,DroidDeck brings the SteamOS experience to Android,owner is not a user,False
+D_new_viral,29,storytold/lightcraft,14764,5680,2026-09-30,2026-10-27,Organization,False,Rust,Apache-2.0,LightCraft: An open-source non-destructive photo editor written by scratch in pure Rust,owner is not a user,False
+D_new_viral,30,cdyforever/how-to-live-better,13501,1003,2026-09-18,2026-10-22,User,False,HTML,,《高性价比人生指南》全书 528 条的在线单页阅读版：手机可读、可搜索、零依赖、支持离线,,False
+D_new_viral,31,KnifeLemon/Filee,13325,855,2026-09-29,2026-10-27,User,False,C#,MIT,"Free, open-source file converter. Convert 263 formats offline by drag & drop — images, PDF",,False
+D_new_viral,32,shihabal3amri/DiPlay,12485,1602,2026-09-24,2026-10-26,User,False,Kotlin,GPL-3.0,Independent CarPlay receiver for compatible Android head units. Wired and wireless public ,,False
+D_new_viral,33,pollen-robotics/microduck,12435,1551,2026-07-29,2026-10-26,Organization,False,Rust,Apache-2.0,A Tiny biped duck robot 🦆,owner is not a user,False
+D_new_viral,34,peach-mitao/peach,12227,1446,2026-08-19,2026-10-26,Organization,False,Python,AGPL-3.0,"Peach 蜜桃：单用户、本地优先的个人媒体系统 · Single-user, local-first personal media system",owner is not a user,False
+D_new_viral,35,jub0t/Concat,11781,1447,2026-08-25,2026-10-26,User,False,Rust,AGPL-3.0,"The truly free, open-source, local-first, cross-platform CapCut replacement. Scriptable th",,False
+D_new_viral,36,trycompai/crm,11706,1725,2026-07-31,2026-10-23,Organization,False,TypeScript,MIT,"Comp AI CRM is an open source, CRM designed for AI agents. Agentic-first CRM.",owner is not a user,False
+D_new_viral,37,yihui-dev/awesome-opus5-5-videos,11559,1211,2026-09-27,2026-10-13,User,False,,MIT,A growing collection of viral videos made with Claude Opus 5.5 and the prompts behind them,"no code language (documentation or text), so not a software project",False
+D_new_viral,38,genspark-ai/genoffice,10962,1501,2026-07-31,2026-10-26,Organization,False,TypeScript,Apache-2.0,"Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors wi",owner is not a user,False
+D_new_viral,39,pathwaycom/arc-task-gen,10958,77,2026-08-04,2026-08-11,Organization,False,Python,MIT,Generates original ARC-AGI-1-style tasks distribution-matched to the public eval set.,owner is not a user,False
+D_new_viral,40,tangency-labs/solidcraft,10834,1365,2026-10-07,2026-10-27,Organization,False,Rust,Apache-2.0,"SolidCraft: an open-source parametric 3D CAD application built in pure Rust. Desktop, web,",owner is not a user,False
+E_new_small,1,getopenpost/openpost,800,108,2026-03-21,2026-10-26,Organization,False,TypeScript,AGPL-3.0,"Create, adapt, schedule, and track social posts. Open-source, hosted or self-hosted.",owner is not a user,False
+E_new_small,2,grafana/gcx,800,65,2026-03-23,2026-10-26,Organization,False,Go,Apache-2.0,A CLI for managing Grafana and Grafana Cloud resources. Optimized for agentic usage.,owner is not a user,False
+E_new_small,3,trailofbits/coop,800,44,2026-04-02,2026-10-26,Organization,False,Rust,Apache-2.0,Isolated VM environment for running Claude Code and Codex,owner is not a user,False
+E_new_small,4,OSideMedia/higgsfield-ai-prompt-skill,800,134,2026-03-08,2026-10-25,User,False,Python,MIT,Claude AI skill for cinematic Higgsfield AI prompts — 32 sub-skills covering Seedance 2.5 ,,True
+E_new_small,5,cskwork/scopeweaver,799,672,2026-10-02,2026-10-26,User,False,Go,AGPL-3.0,"ScopeWeaver: English and Korean localization of ARTEX, with preserved AGPL-3.0 attribution",,False
+E_new_small,6,bruin-data/dac,799,39,2026-03-16,2026-10-26,Organization,False,Go,AGPL-3.0,DaC is a dashboard-as-code tool. Build interactive dashboards using YAML and JSX. Built-in,owner is not a user,False
+E_new_small,7,markfulton/ai-employees,798,228,2026-09-02,2026-10-24,User,False,JavaScript,MIT,"Open source AI Employees. 8 scheduled business roles, 60 routines, on Claude Code and 10 o",,False
+E_new_small,8,xr843/insect-world,798,74,2026-08-06,2026-10-17,User,False,TypeScript,MIT,"Interactive 3D insect field guide: 63 species across 14 orders, every body procedurally ge",,False
+E_new_small,9,ndpvt-web/latex-document-skill,798,60,2026-02-13,2026-10-25,User,False,TeX,,"Universal LaTeX document skill for Claude Code: 27 templates, 27 scripts, 26 reference gui","no code language (documentation or text), so not a software project",False
+E_new_small,10,supermemoryai/openclaw-supermemory,797,91,2026-01-27,2026-10-09,Organization,False,TypeScript,,OpenClaw Supermemory lets to have long-term memory and recall for your openclaw agent.,owner is not a user,False
+E_new_small,11,brexhq/CrabTrap,797,68,2026-04-17,2026-10-21,Organization,False,Go,MIT,An LLM-as-a-judge HTTP proxy to secure agents in production ,owner is not a user,False
+E_new_small,12,floci-io/floci-az,797,140,2026-04-16,2026-10-26,Organization,False,Java,MIT,"Light, fluffy, and always free - Local Azure Emulator ",owner is not a user,False
+E_new_small,13,amitshekhariitbhu/ai-system-design,797,114,2026-09-25,2026-10-26,User,False,Markdown,Apache-2.0,"AI System Design - Learn how to design AI systems built on LLMs, RAG, and AI Agents step b","no code language (documentation or text), so not a software project",False
+E_new_small,14,Junchao-cs/SolarWM,796,41,2026-08-21,2026-10-23,User,False,Python,Apache-2.0,Open data and scalable training for long-horizon video world models.,,True
+E_new_small,15,mkturkcan/DART,796,93,2026-03-11,2026-10-06,User,False,Python,NOASSERTION,Detect Anything in Real Time: Real-time object detection using frontier object detection m,,False
+E_new_small,16,litaolemo/xtquant_big_convert,796,382,2026-07-01,2026-10-26,User,False,Python,MIT,"把大qmt的接口转接, 兼容原有miniqmt的接口以实现替换",,False
+E_new_small,17,dach6/ExaltHelper,795,52,2026-10-10,2026-10-14,User,False,C#,,"A C# Windows companion for Realm of the Mad God Exalt featuring real-time DPS tracking, pl",,False
+E_new_small,18,OpenMOSS/MOSS-VL,795,43,2026-04-08,2026-10-14,Organization,False,C++,Apache-2.0,An open-weight 11B model series for long-form and real-time video understanding,owner is not a user,False
+E_new_small,19,yuwen-cool/yuwen-publish-precheck,794,75,2026-07-15,2026-10-08,User,False,Python,MIT,发布前审｜发抖音/小红书/视频号前先让 AI 审一遍：哪句踩线、依据哪条官方规则、给能直接用的改法。38 篇真实样本校准判定尺度，80+ 条官方原文引文可查证，你踩过的坑沉淀成本地,,True
+E_new_small,20,programmerguohuajing/DiPlay-Legacy-Android,794,111,2026-09-30,2026-10-26,User,False,Kotlin,GPL-3.0,基于 shihabal3amri/DiPlay 修改，面向低版本 Android 系统与老款 Android 车机兼容,,False
+E_new_small,21,DaoyuanLi2816/can-i-finetune-this,794,107,2026-05-16,2026-10-08,User,False,Python,MIT,"Single-GPU LLM fine-tuning preflight: memory estimates, runnable LoRA/QLoRA recipes, and l",,False
+E_new_small,22,MicrosoftDocs/Agent-Skills,793,128,2026-01-27,2026-10-26,Organization,False,,CC-BY-4.0,"Curated Agent Skills for Microsoft & Azure – giving AI coding assistants structured, real-","no code language (documentation or text), so not a software project",False
+E_new_small,23,iblai/os,793,31,2026-03-03,2026-10-27,Organization,False,TypeScript,MIT,Enables organizations to create and deploy customizable AI agents with support for multipl,owner is not a user,False
+E_new_small,24,jsgrrchg/NeverWrite,793,74,2026-03-31,2026-10-26,User,False,TypeScript,Apache-2.0,Your ultimate agentic markdown workspace,,False
+E_new_small,25,coco-research/coco,791,14,2026-04-25,2026-10-26,User,False,Python,NOASSERTION,"CoCo Super Intelligence is the orchestration layer that turns Claude Code, Cursor, or Code",,True
+E_new_small,26,keli-wen/agy-staff,791,52,2026-08-18,2026-10-24,User,False,JavaScript,MIT,Hire Google's Antigravity CLI (agy) as a fast Gemini staffer for Claude Code and OpenAI Co,,False
+E_new_small,27,SAIL-Research-Lab/cheetahclaws,791,275,2026-04-01,2026-10-12,Organization,False,Python,Apache-2.0,"CheetahClaws, From Model Scaling to System Scaling: Scaling the Harness in Agentic AI",owner is not a user,False
+E_new_small,28,VoltiusApp/voltius,791,54,2026-04-17,2026-10-25,Organization,False,TypeScript,AGPL-3.0,"A lightning-fast, modern, local-first SSH/SFTP/Serial client. Real-time E2EE sync, Team va",owner is not a user,False
+E_new_small,29,yibie/awesome-autoresearch,790,60,2026-03-31,2026-10-26,User,False,Python,,awesome autoresearch list,"curated list, tutorial, book, or translation",False
+E_new_small,30,omdsh-dev/dsh-genui,790,80,2026-08-13,2026-10-26,Organization,False,TypeScript,MIT,GenUI for DeepSeek Harness: interactive UI components rendered inline in assistant replies,owner is not a user,False
+E_new_small,31,ChaoticSi1ence/SlimBrave-Neo,790,18,2026-02-24,2026-10-24,User,False,Python,GPL-3.0,"Debloat and harden Brave Browser on Linux, macOS, and Windows using Chromium enterprise po",,False
+E_new_small,32,RoboDojo-Benchmark/RoboDojo,789,110,2026-07-07,2026-10-21,Organization,False,Python,MIT,Official repository for RoboDojo,owner is not a user,False
+E_new_small,33,ReflexioAI/claude-smart,789,89,2026-04-21,2026-10-27,Organization,False,Python,Apache-2.0,"Turns corrections into Preferences, Project-specific skills, and Shared skills for Claude ",owner is not a user,False
+E_new_small,34,thruwire/foreman,789,67,2026-09-17,2026-10-15,Organization,False,Python,MIT,An agent supervisor and software factory foreman powered by decision models,owner is not a user,False
+E_new_small,35,plasma-ai/fractal,788,57,2026-07-01,2026-10-25,Organization,False,Python,Apache-2.0,Hierarchical agent loops with recursive self-organization.,owner is not a user,False
+E_new_small,36,SharpAI/SwiftLM,788,55,2026-03-21,2026-10-26,Organization,False,Swift,MIT,"⚡ Native MLX Swift LLM inference server for Apple Silicon. OpenAI-compatible API, SSD stre",owner is not a user,False
+E_new_small,37,antonio-orionus/Arroxy,788,99,2026-04-24,2026-10-26,User,False,TypeScript,GPL-3.0,"Free open-source downloader for YouTube and 2000+ sites on Windows, macOS, and Linux. Up t",,False
+E_new_small,38,tigicion/dao-code,788,26,2026-06-08,2026-10-26,User,False,TypeScript,MIT,Open-source TypeScript terminal coding agent for DeepSeek-V4 — builds on DeepSeek's strong,,False
+E_new_small,39,impacifist/Windows-GPU-UNLOCK,787,77,2026-10-20,2026-10-26,User,False,C,GPL-2.0,"Windows GPU UNLOCK: RTX3090 UEFI port, Korean no-reset Windows boot guide, verified source",,False
+E_new_small,40,fxgl/steamac,786,36,2026-10-04,2026-10-24,User,False,Swift,Apache-2.0,Valve's official ARM64 SteamOS in a lightweight VM on Apple Silicon: libkrun + Venus + Mol,,False
