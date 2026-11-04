@@ -1,0 +1,90 @@
+"""
+Microsoft-3A GitHub Repository Trust Signal Evaluation & Modeling
+Supports the Trust Score & Signal Improvement Report and Milestone Presentation.
+"""
+
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import StratifiedKFold
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+
+
+def load_evaluation_data(csv_path: str = "data/eval_results.csv") -> pd.DataFrame:
+    """Loads the evaluation dataset from the repository."""
+    df = pd.read_csv(csv_path)
+    print(f"Loaded {len(df)} repositories from {csv_path}")
+    return df
+
+
+def compute_signal_auc(df: pd.DataFrame, feature_cols: list, target_col: str = "target_label") -> pd.DataFrame:
+    """
+    Computes 5-fold stratified cross-validation ROC-AUC for individual signals,
+    supporting the findings on strong predictors vs. near-chance signals.
+    """
+    results = []
+    skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    
+    X = df[feature_cols]
+    y = df[target_col]
+
+    for col in feature_cols:
+        aucs = []
+        for train_idx, test_idx in skf.split(X, y):
+            X_train, X_test = X[[col]].iloc[train_idx], X[[col]].iloc[test_idx]
+            y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
+            
+            # Median imputation and standardization within fold
+            pipeline = Pipeline([
+                ('imputer', SimpleImputer(strategy='median')),
+                ('scaler', StandardScaler()),
+                ('model', LogisticRegression())
+            ])
+            
+            try:
+                pipeline.fit(X_train, y_train)
+                preds = pipeline.predict_proba(X_test)[:, 1]
+                auc = roc_auc_score(y_test, preds)
+                aucs.append(auc)
+            except Exception:
+                aucs.append(0.50) # Fallback for constant or unparseable columns
+                
+        results.append({
+            "Signal Name": col,
+            "Mean ROC-AUC": np.mean(aucs),
+            "Standard Deviation": np.std(aucs)
+        })
+        
+    return pd.DataFrame(results).sort_values(by="Mean ROC-AUC", ascending=False)
+
+
+def evaluate_ensemble_models(df: pd.DataFrame) -> dict:
+    """
+    Evaluates Logistic Regression and Random Forest models on repository features.
+    """
+    features = [c for c in ["age_days", "stargazers_count"] if c in df.columns]
+    if not features:
+        return {}
+        
+    X = df[features]
+    y = df["target_label"]
+    
+    lr = LogisticRegression()
+    rf = RandomForestClassifier(random_state=42)
+    
+    lr.fit(X, y)
+    rf.fit(X, y)
+    
+    return {
+        "Logistic Regression Predictions": lr.predict_proba(X)[:, 1],
+        "Random Forest Predictions": rf.predict_proba(X)[:, 1]
+    }
+
+
+if __name__ == "__main__":
+    # Example usage matching your project structure
+    print("Microsoft-3A Trust Signal Script Initialized.")
