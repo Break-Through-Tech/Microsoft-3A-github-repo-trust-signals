@@ -71,6 +71,9 @@ SIGNAL_COLUMNS = [
     "max_day_share",
     "active_day_ratio",
     "burstiness",
+    "owner_followers",
+    "owner_public_repos",
+    "is_archived",
 ]
 ALL_COLUMNS = IDENTIFIER_COLUMNS + SIGNAL_COLUMNS
 
@@ -104,10 +107,37 @@ def read_snapshot_time(snapshot_path: Path = SNAPSHOT_PATH) -> datetime:
     return as_of
 
 
-async def fetch_record(client: GitHubClient, semaphore: asyncio.Semaphore, listed_as: str, label: str) -> RepoRecord:
+async def fetch_record(
+    client: GitHubClient,
+    semaphore: asyncio.Semaphore,
+    listed_as: str,
+    label: str,
+    *,
+    strict: bool = True,
+    star_history: bool = True,
+) -> RepoRecord:
+    """Fetches everything needed to compute one row.
+
+    Args:
+        client: An open GitHub client.
+        semaphore: Limits how many repos are fetched at once.
+        listed_as: The repo in ``owner/name`` form.
+        label: The repo's label, or any placeholder for unlabeled repos.
+        strict: If False, a rejected contributor stats lookup is treated as no contributors instead of raising, so a
+            caller can still score the repo from the signals that did arrive. The repo lookup itself always raises.
+        star_history: If False, skips the star history, which is the most expensive lookup, and leaves it ``None``.
+
+    Raises:
+        GitHubError: If the repo lookup is rejected, or the contributor stats lookup is rejected and ``strict`` is True.
+    """
     async with semaphore:
         repo = await client.get_repo(listed_as)
-        contributors = await client.get_contributor_stats(listed_as)
+        try:
+            contributors = await client.get_contributor_stats(listed_as)
+        except GitHubError:
+            if strict:
+                raise
+            contributors = []
 
         humans = [c for c in contributors if c.author is not None and not is_bot_contributor(c)]
         top = sorted(humans, key=lambda c: c.total, reverse=True)[:TOP_N_CONTRIBUTORS]
@@ -124,10 +154,12 @@ async def fetch_record(client: GitHubClient, semaphore: asyncio.Semaphore, liste
             owner = await client.get_user(repo.owner.login)
         except GitHubError:
             owner = None
-        try:
-            star_weeks = await client.get_star_history(listed_as)
-        except GitHubError:
-            star_weeks = None
+        star_weeks = None
+        if star_history:
+            try:
+                star_weeks = await client.get_star_history(listed_as)
+            except GitHubError:
+                star_weeks = None
     return RepoRecord(listed_as, label, repo, contributors, top_users, owner, star_weeks)
 
 
@@ -192,6 +224,9 @@ def build_row(record: RepoRecord, as_of: datetime) -> dict[str, object]:
         "max_day_share": star_timing.max_day_share if star_timing else None,
         "active_day_ratio": star_timing.active_day_ratio if star_timing else None,
         "burstiness": star_timing.burstiness if star_timing else None,
+        "owner_followers": record.owner.followers if record.owner else None,
+        "owner_public_repos": record.owner.public_repos if record.owner else None,
+        "is_archived": repo.archived,
     }
 
 
