@@ -1,6 +1,6 @@
 # Dataset
 
-`features.csv` is the one shared dataset: one row per labeled repo (106 repos, 82 good and 24 uncertain) with every signal from every feature branch.
+`features.csv` is the one shared dataset (v2): one row per labeled repo (106 repos, 82 good and 24 uncertain) with every signal from every feature branch.
 `train_split.csv` and `test_split.csv` are its train and test rows (84 and 22, stratified 80/20, seed 42).
 `manifest.json` records the snapshot time, split counts, column lists, missing values, and hashes of the label files and `features.csv`.
 Everyone should evaluate against these files rather than building their own copies, so all results are comparable.
@@ -31,6 +31,8 @@ Compare names case-insensitively.
 | `peak_stars`, `max_day_share` | Stars on the busiest day, and that day's share of all stars |
 | `active_day_ratio` | Share of days since creation with at least one star |
 | `burstiness` | (std - mean) / (std + mean) of daily stars: near -1 is steady, near 1 is spiky |
+| `owner_followers`, `owner_public_repos` | Followers and public repos of the owner account (owner reputation) |
+| `is_archived` | The repo is archived and read-only |
 
 Bot accounts are excluded from both contributor signals.
 The star timing columns come from daily star history through the day before the snapshot.
@@ -56,6 +58,12 @@ uv run python -m gh_signals.build_dataset --verify
 
 `uv run pytest` runs the same check.
 It fails if `good_repos.csv` or `uncertain.csv` change without a rebuild.
+
+## Changes in v2
+
+v2 adds `owner_followers`, `owner_public_repos`, and `is_archived`, from a fresh snapshot.
+Owner reputation deliberately uses earned attention rather than account age, so a new owner is not penalized for being new.
+It still favors established owners, so read it with the fairness limits in `docs/external_evaluation.md`.
 
 ## Replaced files
 
