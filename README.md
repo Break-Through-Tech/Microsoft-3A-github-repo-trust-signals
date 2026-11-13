@@ -1,7 +1,7 @@
 # Microsoft 3A: GitHub Repository Trust Signals
 An interpretable, machine learning-based approach to evaluating the quality and trustworthiness of GitHub repositories using publicly available repository data.
 
-> 💡 **Note for my team:** Hey everyone, it's Neha. Since we are quickly approaching our AI studio project deadline, I took the initiative to start our README. Below is my first draft. Please do not delete this note as it helps me remember that this README is unfinished.
+> 💡 **Note for my team:** Hey everyone, it's Neha. Since we are quickly approaching our AI studio project deadline, I took the initiative to create our README. Below is my first draft. Please do not delete this note as it helps me remember that this README is unfinished.
 ---
 
 ### 👥 **Team Members**
