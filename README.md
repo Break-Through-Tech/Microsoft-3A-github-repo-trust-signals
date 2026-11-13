@@ -1,7 +1,6 @@
-# AI Studio Challenge Project Title
+## Microsoft 3A GitHub Repo Trust Signals
 
-> 💡 **Note for the team:** This is just a template. Update the above title with your AI Studio Challenge Project name. Remove all guidance notes and example text in this template and populate this README with your own content. You can work on this README throughout AI Studio, and get feedback from your AI Studio Coach and Challenge Advisor before finalizing it.  
-
+> 💡 **Note for my team:** Hey everyone, it's Neha. Since we are quickly approaching our AI studio project deadline, I took the initiative to start our README. Below is my first draft. Please do not delete this note as it helps me remember that this README is unfinished.
 ---
 
 ### 👥 **Team Members**
@@ -10,11 +9,7 @@
 
 | Name             | GitHub Handle | Contribution                                                             |
 |------------------|---------------|--------------------------------------------------------------------------|
-| Taylor Nguyen    | @taylornguyen | Data exploration, visualization, overall project coordination            |
-| Jordan Ramirez   | @jramirez     | Data collection, exploratory data analysis (EDA), dataset documentation  |
-| Amina Hassan     | @aminahassan  | Data preprocessing, feature engineering, data validation                 |
-| Priya Mehta      | @pmehta       | Model selection, hyperparameter tuning, model training and optimization  |
-| Chris Park       | @chrispark    | Model evaluation, performance analysis, results interpretation           |
+| Neha Modi        | @NehaM2025    | Trust signal evaluation, logistic regression modeling, ROC-AUC analysis, project documentation, and coordination.|
 
 ---
 
