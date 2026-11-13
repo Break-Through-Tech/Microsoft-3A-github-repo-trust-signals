@@ -269,9 +269,10 @@ class GitHubClient:
                     await asyncio.sleep(2**attempt)
                     continue
 
-            # 200 means it worked, so we're done.
-            if status == 200:
-                return json.loads(body)
+            # 200 means it worked. 202 is how the stats endpoints say "still computing, ask again", which is an
+            # empty result rather than an error; callers such as get_contributor_stats poll on it.
+            if status in (200, 202):
+                return json.loads(body) if body.strip() else []
 
             # Something went wrong. Work out how long to wait, or give up if retrying won't help.
             if status in (403, 429) and "Retry-After" in res_headers:
