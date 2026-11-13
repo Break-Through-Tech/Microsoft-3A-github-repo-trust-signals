@@ -205,6 +205,3 @@ This project is licensed under the [License Name] License.
 This project was completed as part of the Break Through Tech AI Studio Fall 2026 program in collaboration with Microsoft.
 
 Special thanks to our Challenge Advisor, David Koleczek, and AI Studio Coach, Sai Duddu, for their guidance and support.
-
-
-Thank your Challenge Advisor, host company representatives, TA, and others who supported your project.
