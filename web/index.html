@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Repository trust score</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #eef2f6;
+        --paper: #f8fafc;
+        --ink: #172033;
+        --muted: #5c6b7c;
+        --line: #d5dee8;
+        --accent: #1d4e89;
+        --established: #0f6e6a;
+        --mixed: #8a5a12;
+        --limited: #3d4d66;
+        --down: #9b3d4a;
+        --unavailable: #6a7584;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Segoe UI", system-ui, sans-serif;
+        line-height: 1.45;
+      }
+
+      main {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 48px 20px 72px;
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--accent);
+        font-size: 0.82rem;
+        font-weight: 650;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 2rem;
+        font-weight: 650;
+        letter-spacing: -0.02em;
+      }
+
+      .lede {
+        margin: 0 0 28px;
+        max-width: 62ch;
+        color: var(--muted);
+      }
+
+      form {
+        margin: 0;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.92rem;
+        font-weight: 650;
+      }
+
+      .entry {
+        display: flex;
+        gap: 8px;
+      }
+
+      input {
+        flex: 1;
+        min-width: 0;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        color: var(--ink);
+        font: inherit;
+        padding: 12px 14px;
+      }
+
+      input:focus {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+
+      button {
+        border: 0;
+        border-radius: 8px;
+        background: var(--accent);
+        color: #fff;
+        font: inherit;
+        font-weight: 650;
+        padding: 12px 16px;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        cursor: wait;
+        opacity: 0.7;
+      }
+
+      .examples {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .examples button {
+        background: transparent;
+        color: var(--accent);
+        border: 1px solid var(--line);
+        font-weight: 550;
+        padding: 6px 10px;
+      }
+
+      #status {
+        min-height: 1.4em;
+        margin: 16px 0 0;
+        color: var(--muted);
+      }
+
+      #status.error {
+        color: var(--down);
+      }
+
+      #result {
+        margin-top: 8px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--paper);
+      }
+
+      .score-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: flex-end;
+      }
+
+      .score-number {
+        margin: 0;
+        font-size: 4rem;
+        line-height: 0.9;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.04em;
+      }
+
+      .score-caption {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .tier {
+        margin: 0;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-weight: 650;
+        font-size: 0.92rem;
+      }
+
+      #result[data-tier="established"] .tier {
+        color: var(--established);
+        background: #e5f4f3;
+      }
+
+      #result[data-tier="mixed"] .tier {
+        color: var(--mixed);
+        background: #f6edd9;
+      }
+
+      #result[data-tier="limited_evidence"] .tier {
+        color: var(--limited);
+        background: #e6ebf2;
+      }
+
+      .repo-link {
+        color: var(--ink);
+      }
+
+      .summary {
+        margin: 16px 0 0;
+      }
+
+      .warnings {
+        margin: 12px 0 0;
+        padding-left: 18px;
+        color: var(--muted);
+      }
+
+      .signals {
+        list-style: none;
+        margin: 22px 0 0;
+        padding: 0;
+      }
+
+      .signal {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) auto auto;
+        gap: 8px 16px;
+        align-items: baseline;
+        padding: 12px 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .signal .name {
+        font-weight: 650;
+      }
+
+      .signal .value {
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+      }
+
+      .signal .direction {
+        min-width: 7.5rem;
+        text-align: right;
+        font-size: 0.85rem;
+      }
+
+      .direction.up {
+        color: var(--established);
+      }
+
+      .direction.down {
+        color: var(--down);
+      }
+
+      .direction.neutral,
+      .direction.unavailable {
+        color: var(--unavailable);
+      }
+
+      .signal .note {
+        grid-column: 1 / -1;
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .disclaimer {
+        margin: 18px 0 0;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .feedback {
+        margin-top: 18px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+      }
+
+      .feedback p {
+        margin: 0 0 8px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      #feedback-comment {
+        width: 100%;
+        margin-top: 8px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        color: var(--ink);
+        font: inherit;
+        padding: 10px 12px;
+      }
+
+      #feedback-status {
+        min-height: 1.2em;
+        margin-top: 8px;
+      }
+
+      @media (max-width: 640px) {
+        .entry {
+          flex-direction: column;
+        }
+
+        .score-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .score-number {
+          font-size: 3rem;
+        }
+
+        .signal {
+          grid-template-columns: 1fr auto;
+        }
+
+        .signal .direction {
+          grid-column: 1 / -1;
+          text-align: left;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">GitHub repository trust</p>
+      <h1>Score a public repository</h1>
+      <p class="lede">
+        Paste a GitHub URL to see a 0 to 100 trust score, a tier, and the signals behind them.
+        The score uses public metadata only. Repository files are not downloaded.
+      </p>
+      <form id="score-form">
+        <label for="repo-url">Repository URL</label>
+        <div class="entry">
+          <input
+            id="repo-url"
+            name="url"
+            type="text"
+            spellcheck="false"
+            autocomplete="url"
+            placeholder="https://github.com/microsoft/vscode"
+            required
+          />
+          <button type="submit">Score repository</button>
+        </div>
+        <div class="examples">
+          <button type="button" data-example="https://github.com/microsoft/vscode">microsoft/vscode</button>
+          <button type="button" data-example="https://github.com/unionlabs/union">unionlabs/union</button>
+        </div>
+      </form>
+      <p id="status" role="status"></p>
+      <section id="result" hidden aria-live="polite">
+        <div class="score-row">
+          <div>
+            <p id="score-number" class="score-number"></p>
+            <p id="score-caption" class="score-caption"></p>
+          </div>
+          <p id="tier" class="tier"></p>
+        </div>
+        <p class="summary">
+          <a id="repo-link" class="repo-link" target="_blank" rel="noreferrer"></a>
+        </p>
+        <p id="summary" class="summary"></p>
+        <ul id="warnings" class="warnings" hidden></ul>
+        <ul id="signals" class="signals"></ul>
+        <p id="disclaimer" class="disclaimer"></p>
+        <form id="feedback-form" class="feedback">
+          <p>Does this score look right? A note stays on this machine and is not used in the model.</p>
+          <div class="examples">
+            <button type="button" data-judgment="about-right">About right</button>
+            <button type="button" data-judgment="too-high">Too high</button>
+            <button type="button" data-judgment="too-low">Too low</button>
+          </div>
+          <label for="feedback-comment">Note</label>
+          <input id="feedback-comment" type="text" maxlength="500" placeholder="Optional note" />
+          <p id="feedback-status" role="status"></p>
+        </form>
+      </section>
+    </main>
+    <script>
+      const form = document.querySelector("#score-form");
+      const input = document.querySelector("#repo-url");
+      const submit = form.querySelector("button[type='submit']");
+      const examples = document.querySelectorAll("[data-example]");
+      const status = document.querySelector("#status");
+      const result = document.querySelector("#result");
+      const scoreNumber = document.querySelector("#score-number");
+      const scoreCaption = document.querySelector("#score-caption");
+      const tier = document.querySelector("#tier");
+      const repoLink = document.querySelector("#repo-link");
+      const summary = document.querySelector("#summary");
+      const warnings = document.querySelector("#warnings");
+      const signals = document.querySelector("#signals");
+      const disclaimer = document.querySelector("#disclaimer");
+      const feedbackComment = document.querySelector("#feedback-comment");
+      const feedbackStatus = document.querySelector("#feedback-status");
+      const feedbackButtons = document.querySelectorAll("[data-judgment]");
+      let latest = null;
+
+      const directionText = {
+        up: "Raises score",
+        down: "Lowers score",
+        neutral: "Little effect",
+        unavailable: "Typical value",
+      };
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        void score(input.value);
+      });
+
+      examples.forEach((button) => {
+        button.addEventListener("click", () => {
+          input.value = button.dataset.example || "";
+          void score(input.value);
+        });
+      });
+
+      document.querySelector("#feedback-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+      });
+
+      feedbackButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          void saveFeedback(button.dataset.judgment || "");
+        });
+      });
+
+      async function score(url) {
+        setBusy(true);
+        status.className = "";
+        status.textContent = "Fetching public metadata...";
+        feedbackStatus.textContent = "";
+        feedbackComment.value = "";
+        result.hidden = true;
+        try {
+          const response = await fetch("/api/score", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url }),
+          });
+          const payload = await response.json();
+          if (!response.ok) {
+            showError(typeof payload.detail === "string" ? payload.detail : "Could not score that repository.");
+            return;
+          }
+          status.textContent = "";
+          render(payload);
+        } catch {
+          showError("Could not reach the scoring service.");
+        } finally {
+          setBusy(false);
+        }
+      }
+
+      function setBusy(busy) {
+        submit.disabled = busy;
+        examples.forEach((button) => {
+          button.disabled = busy;
+        });
+      }
+
+      function showError(message) {
+        status.className = "error";
+        status.textContent = message;
+      }
+
+      function render(payload) {
+        latest = payload;
+        result.hidden = false;
+        result.dataset.tier = payload.tier;
+        scoreNumber.textContent = payload.score === null ? "Withheld" : String(payload.score);
+        scoreCaption.textContent = payload.score === null ? "Numeric score withheld" : "Trust score out of 100";
+        tier.textContent = payload.tier_label;
+        const href = safeRepoUrl(payload.repo_url);
+        repoLink.textContent = payload.full_name;
+        if (href) {
+          repoLink.href = href;
+        } else {
+          repoLink.removeAttribute("href");
+        }
+        summary.textContent = payload.summary;
+        warnings.replaceChildren();
+        warnings.hidden = payload.warnings.length === 0;
+        payload.warnings.forEach((warning) => {
+          const item = document.createElement("li");
+          item.textContent = warning;
+          warnings.append(item);
+        });
+        signals.replaceChildren();
+        payload.signals.forEach((signal) => {
+          const item = document.createElement("li");
+          item.className = "signal";
+          const name = document.createElement("span");
+          name.className = "name";
+          name.textContent = signal.label;
+          const value = document.createElement("span");
+          value.className = "value";
+          value.textContent = signal.display_value;
+          const direction = document.createElement("span");
+          direction.className = `direction ${signal.direction}`;
+          direction.textContent = directionText[signal.direction] || signal.direction;
+          const note = document.createElement("p");
+          note.className = "note";
+          note.textContent = signal.note;
+          item.append(name, value, direction, note);
+          signals.append(item);
+        });
+        disclaimer.textContent = payload.disclaimer;
+      }
+
+      async function saveFeedback(judgment) {
+        if (!latest) {
+          return;
+        }
+        feedbackStatus.textContent = "Saving note...";
+        try {
+          const response = await fetch("/api/feedback", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              full_name: latest.full_name,
+              score: latest.score,
+              tier: latest.tier,
+              judgment,
+              comment: feedbackComment.value,
+            }),
+          });
+          const payload = await response.json();
+          if (!response.ok) {
+            feedbackStatus.textContent = typeof payload.detail === "string" ? payload.detail : "Could not save the note.";
+            return;
+          }
+          feedbackStatus.textContent = "Saved on this machine. This note is not used in the score.";
+          feedbackComment.value = "";
+        } catch {
+          feedbackStatus.textContent = "Could not save the note.";
+        }
+      }
+
+      function safeRepoUrl(url) {
+        try {
+          const parsed = new URL(url);
+          if (parsed.protocol === "https:" && parsed.hostname === "github.com") {
+            return parsed.href;
+          }
+        } catch {
+          return null;
+        }
+        return null;
+      }
+    </script>
+  </body>
+</html>

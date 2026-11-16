@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Repository trust score</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #eef2f6;
+        --paper: #f8fafc;
+        --ink: #172033;
+        --muted: #5c6b7c;
+        --line: #d5dee8;
+        --accent: #1d4e89;
+        --down: #9b3d4a;
+        --mixed: #8a5a12;
+        --limited: #3d4d66;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Segoe UI", system-ui, sans-serif;
+        line-height: 1.45;
+      }
+
+      .progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: var(--accent);
+        width: 0;
+      }
+
+      .deck {
+        min-height: 100%;
+        padding: 48px 28px 96px;
+      }
+
+      .slide {
+        display: none;
+        max-width: 920px;
+        margin: 0 auto;
+        min-height: calc(100vh - 144px);
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .slide.active {
+        display: flex;
+      }
+
+      .kicker {
+        margin: 0 0 10px;
+        color: var(--accent);
+        font-size: 0.82rem;
+        font-weight: 650;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      h1:focus,
+      h2:focus {
+        outline: none;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 3.1rem);
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+        font-weight: 650;
+        max-width: 16ch;
+      }
+
+      h2 {
+        margin: 0 0 18px;
+        font-size: clamp(1.6rem, 3vw, 2.15rem);
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        font-weight: 650;
+        max-width: 22ch;
+      }
+
+      .lede {
+        margin: 18px 0 0;
+        max-width: 38rem;
+        font-size: 1.2rem;
+        color: var(--muted);
+      }
+
+      p {
+        margin: 0 0 12px;
+        max-width: 40rem;
+        font-size: 1.08rem;
+      }
+
+      .quiet {
+        color: var(--muted);
+      }
+
+      ul,
+      ol {
+        margin: 8px 0 0;
+        padding: 0;
+        list-style: none;
+        max-width: 40rem;
+      }
+
+      li {
+        margin: 0;
+        padding: 11px 0;
+        border-top: 1px solid var(--line);
+        font-size: 1.05rem;
+      }
+
+      li strong {
+        font-weight: 650;
+      }
+
+      .steps li {
+        display: grid;
+        grid-template-columns: 2rem 1fr;
+        gap: 12px;
+        align-items: baseline;
+      }
+
+      .num {
+        color: var(--accent);
+        font-variant-numeric: tabular-nums;
+        font-weight: 650;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px 40px;
+        max-width: 920px;
+      }
+
+      .panel h3 {
+        margin: 0 0 8px;
+        font-size: 0.95rem;
+        font-weight: 650;
+      }
+
+      .formula {
+        margin: 0;
+        padding: 16px 18px;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-size: 0.92rem;
+        line-height: 1.7;
+      }
+
+      .bars {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        max-width: 920px;
+      }
+
+      .bars li {
+        display: grid;
+        grid-template-columns: 13rem minmax(0, 1fr) 3.2rem;
+        gap: 12px;
+        align-items: center;
+        border-top: 0;
+        padding: 7px 0;
+      }
+
+      .track {
+        display: block;
+        height: 8px;
+        background: var(--line);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .fill {
+        display: block;
+        height: 100%;
+        background: var(--accent);
+      }
+
+      .fill.down {
+        background: var(--down);
+      }
+
+      .coef {
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+        font-weight: 650;
+      }
+
+      .coef.down {
+        color: var(--down);
+      }
+
+      .coef.up {
+        color: var(--accent);
+      }
+
+      .tiers {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        max-width: 920px;
+        margin-top: 8px;
+      }
+
+      .tier {
+        padding: 16px;
+        border-radius: 12px;
+        background: var(--paper);
+        border: 1px solid var(--line);
+      }
+
+      .tier h3 {
+        margin: 0 0 6px;
+        font-size: 1.05rem;
+      }
+
+      .tier p {
+        margin: 0;
+        font-size: 0.98rem;
+      }
+
+      .tier.established h3 {
+        color: var(--accent);
+      }
+
+      .tier.mixed h3 {
+        color: var(--mixed);
+      }
+
+      .tier.limited h3 {
+        color: var(--limited);
+      }
+
+      .chrome {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 28px 18px;
+        background: var(--bg);
+        border-top: 1px solid var(--line);
+      }
+
+      .chrome p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+        font-variant-numeric: tabular-nums;
+      }
+
+      button {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        color: var(--ink);
+        font: inherit;
+        font-weight: 650;
+        padding: 8px 14px;
+        cursor: pointer;
+      }
+
+      button:focus-visible,
+      .slide:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      button:disabled {
+        opacity: 0.45;
+        cursor: default;
+      }
+
+      #next {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+
+      @media (max-width: 720px) {
+        .deck {
+          padding: 32px 18px 108px;
+        }
+
+        .split,
+        .tiers {
+          grid-template-columns: 1fr;
+        }
+
+        .bars li {
+          grid-template-columns: 1fr auto;
+        }
+
+        .track {
+          grid-column: 1 / -1;
+        }
+
+        .chrome {
+          padding: 12px 18px 16px;
+        }
+      }
+
+      @page {
+        size: 13.333in 7.5in;
+        margin: 0.55in 0.7in;
+      }
+
+      @media print {
+        html,
+        body {
+          height: auto;
+          background: var(--bg);
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+
+        .progress,
+        .chrome {
+          display: none !important;
+        }
+
+        .deck {
+          min-height: 0;
+          padding: 0;
+        }
+
+        .slide,
+        .slide.active,
+        .slide[hidden] {
+          display: flex !important;
+          min-height: 6.3in;
+          justify-content: center;
+          break-inside: avoid;
+          break-after: page;
+          page-break-after: always;
+        }
+
+        .slide:last-of-type {
+          break-after: auto;
+          page-break-after: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress" id="progress"></div>
+    <main class="deck" id="deck">
+      <section class="slide active">
+        <p class="kicker">GitHub repository trust</p>
+        <h1>A public URL, a trust score</h1>
+        <p class="lede">
+          Paste any public GitHub repository. The app returns a score from 0 to 100, a tier, and the
+          signals behind them.
+        </p>
+      </section>
+
+      <section class="slide" hidden>
+        <p class="kicker">The question</p>
+        <h2>Does this look like a known-good repository?</h2>
+        <p>
+          The score is how close public metadata sits to repositories such as widely used, maintained
+          projects. A low score means limited evidence of that resemblance.
+        </p>
+        <p class="quiet">It is not a finding that the repository is harmful, malicious, or unfit to use.</p>
+      </section>
+
+      <section class="slide" hidden>
+        <p class="kicker">The app</p>
+        <h2>One page, three things to read</h2>
+        <ul>
+          <li><strong>Score.</strong> 0 to 100, or withheld when the comparison would be misleading.</li>
+          <li><strong>Tier.</strong> Established, Mixed, or Limited evidence.</li>
+          <li><strong>Signals.</strong> 18 rows. Each one says whether it raised the score, lowered it, or barely moved it.</li>
+        </ul>
+        <p class="quiet" style="margin-top: 16px">Repository files are never downloaded and never run.</p>
+      </section>
+
+      <section class="slide" hidden>
+        <p class="kicker">One lookup</p>
+        <h2>From a URL to a score</h2>
+        <ol class="steps">
+          <li><span class="num">1</span><span>Read a github.com URL, or an owner/name pair.</span></li>
+          <li><span class="num">2</span><span>Fetch the repository, the owner profile, and daily star history.</span></li>
+          <li><span class="num">3</span><span>Turn that metadata into the same 18 features used in training.</span></li>
+          <li><span class="num">4</span><span>Run the saved logistic regression. No retraining at lookup time.</span></li>
+          <li><span class="num">5</span><span>Apply the tier rules, then return the breakdown.</span></li>
+        </ol>
+      </section>
+
+      <section class="slide" hidden>
+        <p class="kicker">What GitHub is asked for</p>
+        <h2>Three public reads</h2>
+        <ul>
+          <li><strong>Repository.</strong> Stars, forks, watchers, open issues, size, dates, license, and whether the owner is an organization.</li>
+          <li><strong>Owner.</strong> Follower count, used for stars per owner follower. If this call fails, that one feature uses a typical training value.</li>
+          <li><strong>Star history.</strong> Stars per day. The lookup waits 4 seconds. If history is slow or missing, the score still returns.</li>
+        </ul>
+        <p class="quiet" style="margin-top: 16px">The repository payload is cached for 24 hours. The client pauses before it uses up the hourly rate limit.</p>
+      </section>
+
+      <section class="slide" hidden>
+        <p class="kicker">Features</p>
+        <h2>Eighteen signals, five groups</h2>
+        <div class="split">
+          <div>
+            <ul>
+              <li><strong>Audience.</strong> Stars, forks, watchers, open issues, size.</li>
+              <li><strong>Time.</strong> Age in days, days since the last push, stars per day.</li>
+              <li><strong>Ratios.</strong> Forks, watchers, and open issues per star, plus stars per owner follower.</li>
+            </ul>
+          </div>
+          <div>
+            <ul>
+              <li><strong>Identity.</strong> A detected license, and an organization owner.</li>
+              <li><strong>Star timing.</strong> The busiest day, that day's share of all stars, the share of days with at least one star, and burstiness.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" hidden>
+        <p class="kicker">Training</p>
+        <h2>A small, human-reviewed set</h2>
+        <ul>
+          <li><strong>106 repositories.</strong> 82 labeled known-good, 24 labeled uncertain.</li>
+          <li><strong>Uncertain</strong> means thin history, weak engagement for the star count, or heavy marketing. It does not mean proven harm.</li>
+          <li><strong>Split.</strong> 80 percent train, 20 percent holdout, stratified, seed 42. That is 84 train rows and 22 holdout rows.</li>
+          <li><strong>Fit.</strong> Fill gaps with the training median, standardize each column, then fit a logistic regression.</li>
+          <li><strong>Holdout ROC AUC.</strong> 0.965. The holdout has 17 known-good repos and 5 uncertain ones, so that number is from a small test.</li>
+        </ul>
+      </section>
+
+      <section class="slide" hidden>
+        <p class="kicker">The model</p>
+        <h2>One weighted sum, then a curve</h2>
+        <div class="split">
+          <div class="panel">
+            <h3>For each signal</h3>
+            <p class="formula">z = (value - mean) / scale<br />contribution = coefficient x z</p>
+            <p class="quiet" style="margin-top: 12px">A missing value is replaced with the training median. The row is still marked as not loaded.</p>
+          </div>
+          <div class="panel">
+            <h3>Then the score</h3>
+            <p class="formula">logit = 2.90 + sum of contributions<br />probability = 1 / (1 + exp(-logit))<br />score = round(probability x 100)</p>
+            <p class="quiet" style="margin-top: 12px">The score is clamped to 0 through 100. The probability is P(known-good).</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" hidden>
+        <p class="kicker">How a row gets its arrow</p>
+        <h2>Each signal's addition to the logit</h2>
+        <ul>
+          <li><strong>Raises the score</strong> when that signal's contribution is above +0.05.</li>
+          <li><strong>Lowers the score</strong> when the contribution is below -0.05.</li>
+          <li><strong>Little effect</strong> when it sits between those two.</li>
+          <li><strong>Typical value</strong> when the live number was not loaded. The median still entered the sum.</li>
+        </ul>
+        <p class="quiet" style="margin-top: 16px">
+          A repo at the training average has logit 2.90, about a score of 95. That average repo has about 52,500 stars and is 2,950 days old, and about 88% of the training repos are organization-owned. Live repos are scored by how far they sit from that center. A star count of at least 1,000 is not allowed to lower the score, because that center is much higher than a popular repository in the wider world.
+        </p>
+      </section>
+
+      <section class="slide" hidden>
+        <p class="kicker">Standardized coefficients</p>
+        <h2>What moves the score most</h2>
+        <ul class="bars" id="coefs">
+          <li>
+            <span>Org owner</span>
+            <span class="track"><span class="fill" style="width: 100%"></span></span>
+            <span class="coef up">+1.20</span>
+          </li>
+          <li>
+            <span>Age in days</span>
+            <span class="track"><span class="fill" style="width: 76%"></span></span>
+            <span class="coef up">+0.91</span>
+          </li>
+          <li>
+            <span>Busiest-day share</span>
+            <span class="track"><span class="fill down" style="width: 72%"></span></span>
+            <span class="coef down">-0.86</span>
+          </li>
+          <li>
+            <span>Days since push</span>
+            <span class="track"><span class="fill down" style="width: 56%"></span></span>
+            <span class="coef down">-0.67</span>
+          </li>
+          <li>
+            <span>Days with a star</span>
+            <span class="track"><span class="fill" style="width: 53%"></span></span>
+            <span class="coef up">+0.64</span>
+          </li>
+          <li>
+            <span>Watchers per star</span>
+            <span class="track"><span class="fill" style="width: 45%"></span></span>
+            <span class="coef up">+0.54</span>
+          </li>
+          <li>
+            <span>Stars on busiest day</span>
+            <span class="track"><span class="fill down" style="width: 40%"></span></span>
+            <span class="coef down">-0.48</span>
+          </li>
+          <li>
+            <span>Stars per follower</span>
+            <span class="track"><span class="fill down" style="width: 40%"></span></span>
+            <span class="coef down">-0.47</span>
+          </li>
+        </ul>
+        <p class="quiet" style="margin-top: 8px">
+          Bar length is the absolute coefficient. A plus sign means a higher value raises P(known-good), after the other signals. These are associations in a small training set.
+        </p>
+      </section>
+
+      <section class="slide" hidden>
+        <p class="kicker">Star timing</p>
+        <h2>A calendar of daily star counts</h2>
+        <p>Days run from the creation date through yesterday. A day with no stars is a zero, not a gap in the series.</p>
+        <ul>
+          <li><strong>Busiest day.</strong> The largest single-day count.</li>
+          <li><strong>That day's share.</strong> Busiest day divided by all stars in the window.</li>
+          <li><strong>Active-day share.</strong> Days with at least one star, divided by all days.</li>
+          <li><strong>Burstiness.</strong> (standard deviation - mean) / (standard deviation + mean) of the daily counts. Steady calendars sit near -1. One or two spikes sit near +1.</li>
+        </ul>
+        <p class="quiet" style="margin-top: 16px">A launch day and a coordinated campaign can look alike here. The other 14 signals stay in the sum.</p>
+      </section>
+
+      <section class="slide" hidden>
+        <p class="kicker">The last step</p>
+        <h2>The number is sometimes withheld</h2>
+        <div class="tiers">
+          <article class="tier established">
+            <h3>Established</h3>
+            <p>70 to 100. Metadata resembles the known-good training repos.</p>
+          </article>
+          <article class="tier mixed">
+            <h3>Mixed</h3>
+            <p>40 to 69. Some signals match that set and some do not.</p>
+          </article>
+          <article class="tier limited">
+            <h3>Limited evidence</h3>
+            <p>Under 40, or the score is blank. Weak resemblance, not a harm verdict.</p>
+          </article>
+        </div>
+        <p style="margin-top: 18px">
+          Under 90 days old, or under 50 stars, the score stays blank and the tier is Limited evidence. The training set is mostly well-known projects, so a low number there would mostly measure age and audience.
+        </p>
+        <p class="quiet">An archived repo or a fork adds a warning. Neither one is its own feature in the model.</p>
+      </section>
+    </main>
+    <footer class="chrome">
+      <button type="button" id="prev">Previous</button>
+      <p id="count" aria-live="polite">1 / 12</p>
+      <button type="button" id="next">Next</button>
+    </footer>
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const count = document.querySelector("#count");
+      const prev = document.querySelector("#prev");
+      const next = document.querySelector("#next");
+      const progress = document.querySelector("#progress");
+      let index = 0;
+
+      function show(nextIndex) {
+        index = Math.max(0, Math.min(slides.length - 1, nextIndex));
+        slides.forEach((slide, slideIndex) => {
+          const on = slideIndex === index;
+          slide.classList.toggle("active", on);
+          slide.hidden = !on;
+          if (on) {
+            slide.setAttribute("aria-current", "true");
+            slide.removeAttribute("inert");
+          } else {
+            slide.removeAttribute("aria-current");
+            slide.setAttribute("inert", "");
+          }
+        });
+        count.textContent = `${index + 1} / ${slides.length}`;
+        progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+        prev.disabled = index === 0;
+        next.disabled = index === slides.length - 1;
+        const heading = slides[index].querySelector("h1, h2");
+        if (heading) {
+          heading.tabIndex = -1;
+          heading.focus({ preventScroll: true });
+        }
+      }
+
+      prev.addEventListener("click", () => show(index - 1));
+      next.addEventListener("click", () => show(index + 1));
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === "ArrowDown" || event.key === "PageDown") {
+          event.preventDefault();
+          show(index + 1);
+        } else if (event.key === "ArrowLeft" || event.key === "ArrowUp" || event.key === "PageUp") {
+          event.preventDefault();
+          show(index - 1);
+        } else if (event.key === "Home") {
+          event.preventDefault();
+          show(0);
+        } else if (event.key === "End") {
+          event.preventDefault();
+          show(slides.length - 1);
+        }
+      });
+
+      if (new URLSearchParams(location.search).has("print")) {
+        slides.forEach((slide) => {
+          slide.hidden = false;
+          slide.classList.add("active");
+          slide.removeAttribute("inert");
+        });
+      } else {
+        show(0);
+      }
+    </script>
+  </body>
+</html>
