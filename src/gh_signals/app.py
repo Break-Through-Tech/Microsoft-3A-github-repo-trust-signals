@@ -6,6 +6,7 @@ Run it with:
 
 Then open http://127.0.0.1:8000
 The walkthrough is at http://127.0.0.1:8000/slides
+The update deck is at http://127.0.0.1:8000/updates
 
 Score one repository in the terminal with:
 
@@ -24,6 +25,7 @@ from gh_signals.score import MODEL_MISSING_MESSAGE, RepoURLError, ScoreResult, g
 
 WEB_INDEX = Path(__file__).parents[2] / "web" / "index.html"
 WEB_SLIDES = Path(__file__).parents[2] / "web" / "slides.html"
+WEB_UPDATES = Path(__file__).parents[2] / "web" / "updates.html"
 
 app = FastAPI(title="Repository trust score")
 
@@ -57,6 +59,12 @@ async def index() -> FileResponse:
 async def slides() -> FileResponse:
     """Serve the walkthrough of the score, the features, and the model."""
     return FileResponse(WEB_SLIDES, headers={"Cache-Control": "no-cache"})
+
+
+@app.get("/updates")
+async def updates() -> FileResponse:
+    """Serve the short deck of changes made after the coach review."""
+    return FileResponse(WEB_UPDATES, headers={"Cache-Control": "no-cache"})
 
 
 @app.post("/api/score")

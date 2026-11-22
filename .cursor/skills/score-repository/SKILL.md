@@ -19,7 +19,9 @@ from gh_signals.score import score_repository
 result = asyncio.run(score_repository("https://github.com/owner/name"))
 ```
 
-`result.score` is an integer from 0 to 100, or `None` when the number is withheld. `result.tier` is `established`, `mixed`, or `limited_evidence`. `result.signals` is the breakdown.
+`result.score` is an integer from 0 to 100, or `None` when the number is withheld. `result.tier` is `established`, `mixed`, or `limited_evidence`. `result.signals` is the breakdown. `result.usage_summary` says how long the score took, how many GitHub requests it used, and how many remain this hour.
+
+A repeat of the same repository within 24 hours is served from cache and does not spend the quota. Without a token the limit is 60 requests an hour. With `GITHUB_TOKEN` or `gh auth login` it is 5,000. A new repository uses one request for the repo, one for the owner, and one per page of star history. Star history stops after 4 seconds.
 
 ## CLI
 

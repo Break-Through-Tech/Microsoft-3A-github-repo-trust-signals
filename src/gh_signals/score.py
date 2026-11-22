@@ -20,6 +20,7 @@ import math
 from pathlib import Path
 import re
 import sys
+import time
 from typing import Literal, Protocol
 from urllib.parse import urlparse
 
@@ -133,6 +134,12 @@ class ScoreResult(BaseModel):
     disclaimer: str
     fetched_at: datetime
     trained_through: str
+    elapsed_ms: int | None = None
+    github_requests: int | None = None
+    cache_hits: int | None = None
+    rate_limit_remaining: int | None = None
+    rate_limit_limit: int | None = None
+    usage_summary: str = ""
 
 
 class TrainedModel(BaseModel):
@@ -417,10 +424,13 @@ async def score_repository(
     requested = parse_repo_url(text)
     trained = model if model is not None else load_model()
     moment = as_of or datetime.now(UTC)
+    started = time.perf_counter()
     if source is None:
         async with GitHubClient() as client:
-            return await _score_loaded(client, requested, trained, moment, star_timeout_seconds)
-    return await _score_loaded(source, requested, trained, moment, star_timeout_seconds)
+            result = await _score_loaded(client, requested, trained, moment, star_timeout_seconds)
+            return _with_usage(result, client, started)
+    result = await _score_loaded(source, requested, trained, moment, star_timeout_seconds)
+    return _with_usage(result, source, started)
 
 
 def _join_repo(owner: str, name: str) -> str:
@@ -581,6 +591,80 @@ async def _load_star_weeks(
         return None, _STAR_MISSING_WARNING
 
 
+def describe_usage(
+    elapsed_ms: int,
+    *,
+    github_requests: int | None,
+    cache_hits: int | None,
+    remaining: int | None,
+    limit: int | None,
+) -> str:
+    """Describe how long a score took and what it cost against the hourly GitHub limit.
+
+    Args:
+        elapsed_ms: Wall time for the lookup, in milliseconds.
+        github_requests: Live GitHub responses for this score, or ``None`` when the source does not report them.
+        cache_hits: Responses read from the local cache.
+        remaining: Requests GitHub says are left this hour, or ``None`` when no live response reported a limit.
+        limit: The hourly allowance from GitHub, such as 60 or 5,000.
+
+    Returns:
+        One or two sentences safe to show on the page and in the terminal.
+    """
+    if elapsed_ms < 100:
+        took = "Took under 0.1 seconds."
+    elif elapsed_ms < 10_000:
+        took = f"Took {elapsed_ms / 1000:.1f} seconds."
+    else:
+        took = f"Took {round(elapsed_ms / 1000)} seconds."
+    if github_requests is None:
+        return took
+    if github_requests == 0:
+        return f"{took} Served from cache, so this score did not use the hourly GitHub limit."
+    request_word = "request" if github_requests == 1 else "requests"
+    sentence = f"{took} Used {github_requests} GitHub {request_word}"
+    if cache_hits:
+        hit_word = "response" if cache_hits == 1 else "responses"
+        sentence = f"{sentence} and {cache_hits} cached {hit_word}"
+    sentence = f"{sentence}."
+    if remaining is not None and limit is not None:
+        return f"{sentence} {remaining:,} of {limit:,} remain this hour."
+    if remaining is not None:
+        return f"{sentence} {remaining:,} remain this hour."
+    return sentence
+
+
+def _with_usage(result: ScoreResult, source: MetadataSource, started: float) -> ScoreResult:
+    """Attach elapsed time and, for a GitHub client, the quota this score spent."""
+    elapsed_ms = max(0, round((time.perf_counter() - started) * 1000))
+    requests: int | None = None
+    hits: int | None = None
+    remaining: int | None = None
+    limit: int | None = None
+    if isinstance(source, GitHubClient):
+        usage = source.usage()
+        requests = usage.network_requests
+        hits = usage.cache_hits
+        remaining = usage.remaining
+        limit = usage.limit
+    return result.model_copy(
+        update={
+            "elapsed_ms": elapsed_ms,
+            "github_requests": requests,
+            "cache_hits": hits,
+            "rate_limit_remaining": remaining,
+            "rate_limit_limit": limit,
+            "usage_summary": describe_usage(
+                elapsed_ms,
+                github_requests=requests,
+                cache_hits=hits,
+                remaining=remaining,
+                limit=limit,
+            ),
+        }
+    )
+
+
 def format_score(result: ScoreResult) -> str:
     """Render a score payload as plain text for the terminal.
 
@@ -596,9 +680,15 @@ def format_score(result: ScoreResult) -> str:
         result.repo_url,
         f"Score: {shown}",
         f"Tier: {result.tier_label}",
-        "",
-        result.summary,
     ]
+    if result.usage_summary:
+        lines.append(result.usage_summary)
+    lines.extend(
+        [
+            "",
+            result.summary,
+        ]
+    )
     if result.warnings:
         lines.append("")
         lines.extend(f"Warning: {warning}" for warning in result.warnings)

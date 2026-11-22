@@ -11,7 +11,7 @@ import pytest
 from gh_signals.app import app
 from gh_signals.build_dataset import FEATURES_PATH, MANIFEST_PATH
 from gh_signals.feedback import record_feedback
-from gh_signals.github_client import GitHubError
+from gh_signals.github_client import GitHubClient, GitHubError
 from gh_signals.schemas import License, Owner, Repo, StarWeek, User
 from gh_signals.score import (
     FEATURE_NAMES,
@@ -20,6 +20,7 @@ from gh_signals.score import (
     TrainedModel,
     apply_star_count_floor,
     build_score,
+    describe_usage,
     format_score,
     live_features,
     load_model,
@@ -178,6 +179,9 @@ async def test_score_repository_uses_metadata_and_reports_a_slow_star_history() 
     )
 
     assert result.full_name == "example/project"
+    assert result.github_requests is None
+    assert result.elapsed_ms is not None
+    assert result.usage_summary.startswith("Took")
     assert result.score == 50
     assert result.tier == "mixed"
     assert any("did not return in time" in warning for warning in result.warnings)
@@ -258,12 +262,16 @@ def test_index_and_bad_url_do_not_call_github() -> None:
     with TestClient(app) as client:
         page = client.get("/")
         slides = client.get("/slides")
+        updates = client.get("/updates")
         rejected = client.post("/api/score", json={"url": "https://example.com/acme/widget"})
 
     assert page.status_code == 200
     assert "Score a public repository" in page.text
+    assert "Skip the form" not in page.text
     assert slides.status_code == 200
     assert "A public URL, a trust score" in slides.text
+    assert updates.status_code == 200
+    assert "What changed after the coach review" in updates.text
     assert rejected.status_code == 400
     assert "github.com" in rejected.json()["detail"]
 
@@ -286,6 +294,51 @@ def test_format_score_lists_the_tier_signals_and_warnings() -> None:
     assert "Stars" in text
     assert "Little effect" in text
     assert result.disclaimer in text
+
+
+def test_describe_usage_reports_cache_hits_and_the_hourly_limit() -> None:
+    cached = describe_usage(180, github_requests=0, cache_hits=3, remaining=None, limit=None)
+    spent = describe_usage(2400, github_requests=12, cache_hits=1, remaining=58, limit=60)
+    unknown = describe_usage(40, github_requests=None, cache_hits=None, remaining=None, limit=None)
+
+    assert cached == "Took 0.2 seconds. Served from cache, so this score did not use the hourly GitHub limit."
+    assert spent == "Took 2.4 seconds. Used 12 GitHub requests and 1 cached response. 58 of 60 remain this hour."
+    assert unknown == "Took under 0.1 seconds."
+
+
+async def test_a_cached_read_does_not_spend_the_hourly_limit(tmp_path: Path) -> None:
+    client = GitHubClient(cache_dir=tmp_path)
+    (tmp_path / "repos_example_project.json").write_text("{}", encoding="utf-8")
+
+    payload = await client.get_repo_raw("example/project")
+    usage = client.usage()
+
+    assert payload == {}
+    assert usage.network_requests == 0
+    assert usage.cache_hits == 1
+    assert usage.remaining is None
+
+
+def test_a_live_exchange_records_the_remaining_hourly_limit() -> None:
+    client = GitHubClient(cache_dir=None)
+    client._count_exchange(
+        {"x-ratelimit-remaining": "58", "x-ratelimit-reset": "1700000000", "x-ratelimit-limit": "60"}
+    )
+
+    usage = client.usage()
+
+    assert usage.network_requests == 1
+    assert usage.cache_hits == 0
+    assert usage.remaining == 58
+    assert usage.limit == 60
+
+
+def test_format_score_includes_the_usage_line() -> None:
+    result = build_score(
+        _flat_model(), full_name="example/project", features=_features(), fetched_at=AS_OF, warnings=[]
+    ).model_copy(update={"usage_summary": "Took 0.4 seconds. Used 3 GitHub requests. 57 of 60 remain this hour."})
+
+    assert "57 of 60 remain this hour." in format_score(result)
 
 
 def test_format_score_says_when_the_number_is_withheld() -> None:

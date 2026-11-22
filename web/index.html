@@ -7,8 +7,8 @@
     <style>
       :root {
         color-scheme: light;
-        --bg: #eef2f6;
-        --paper: #f8fafc;
+        --bg: #e7eef6;
+        --paper: #ffffff;
         --ink: #172033;
         --muted: #5c6b7c;
         --line: #d5dee8;
@@ -18,6 +18,7 @@
         --limited: #3d4d66;
         --down: #9b3d4a;
         --unavailable: #6a7584;
+        --ring: 326.73;
       }
 
       * {
@@ -26,49 +27,96 @@
 
       body {
         margin: 0;
-        background: var(--bg);
+        background:
+          radial-gradient(820px 380px at -8% -10%, rgba(29, 78, 137, 0.22), transparent 62%),
+          radial-gradient(680px 360px at 110% -8%, rgba(15, 110, 106, 0.2), transparent 58%),
+          radial-gradient(520px 320px at 80% 110%, rgba(138, 90, 18, 0.12), transparent 60%),
+          var(--bg);
         color: var(--ink);
-        font-family: "Segoe UI", system-ui, sans-serif;
+        font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
         line-height: 1.45;
       }
 
       main {
         max-width: 760px;
         margin: 0 auto;
-        padding: 48px 20px 72px;
+        padding: 40px 20px 72px;
+      }
+
+      .hero {
+        margin-bottom: 22px;
       }
 
       .eyebrow {
         margin: 0 0 8px;
         color: var(--accent);
         font-size: 0.82rem;
-        font-weight: 650;
-        letter-spacing: 0.04em;
+        font-weight: 700;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
       }
 
       h1 {
         margin: 0 0 12px;
-        font-size: 2rem;
-        font-weight: 650;
-        letter-spacing: -0.02em;
+        font-size: 2.35rem;
+        font-weight: 750;
+        letter-spacing: -0.035em;
+        line-height: 1.05;
       }
 
       .lede {
-        margin: 0 0 28px;
+        margin: 0;
         max-width: 62ch;
         color: var(--muted);
+      }
+
+      .highlights {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin: 18px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .highlights li {
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 8px 24px rgba(23, 32, 51, 0.06);
+      }
+
+      .highlights strong,
+      .highlights span {
+        display: block;
+      }
+
+      .highlights strong {
+        font-size: 0.95rem;
+      }
+
+      .highlights span {
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 0.82rem;
       }
 
       form {
         margin: 0;
       }
 
+      #score-form {
+        padding: 18px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.86);
+        box-shadow: 0 16px 40px rgba(23, 32, 51, 0.08);
+      }
+
       label {
         display: block;
         margin-bottom: 8px;
         font-size: 0.92rem;
-        font-weight: 650;
+        font-weight: 700;
       }
 
       .entry {
@@ -80,8 +128,8 @@
         flex: 1;
         min-width: 0;
         border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--paper);
+        border-radius: 12px;
+        background: #fff;
         color: var(--ink);
         font: inherit;
         padding: 12px 14px;
@@ -94,13 +142,18 @@
 
       button {
         border: 0;
-        border-radius: 8px;
-        background: var(--accent);
+        border-radius: 12px;
+        background: linear-gradient(180deg, #2a62a8, var(--accent));
         color: #fff;
         font: inherit;
-        font-weight: 650;
+        font-weight: 700;
         padding: 12px 16px;
         cursor: pointer;
+        box-shadow: 0 8px 16px rgba(29, 78, 137, 0.22);
+      }
+
+      button:hover {
+        filter: brightness(1.06);
       }
 
       button:disabled {
@@ -112,21 +165,29 @@
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
-        margin-top: 10px;
+        margin-top: 12px;
       }
 
-      .examples button {
-        background: transparent;
+      .examples button,
+      .feedback button {
+        background: #fff;
         color: var(--accent);
-        border: 1px solid var(--line);
-        font-weight: 550;
-        padding: 6px 10px;
+        border: 1px solid #c5d4e6;
+        box-shadow: none;
+        font-weight: 650;
+        padding: 7px 12px;
+      }
+
+      .feedback button.chosen {
+        background: #e7f0fa;
+        border-color: var(--accent);
       }
 
       #status {
         min-height: 1.4em;
         margin: 16px 0 0;
         color: var(--muted);
+        font-weight: 650;
       }
 
       #status.error {
@@ -135,54 +196,131 @@
 
       #result {
         margin-top: 8px;
-        padding: 24px;
-        border: 1px solid var(--line);
-        border-radius: 12px;
+        padding: 22px 22px 18px;
+        border: 0;
+        border-radius: 20px;
         background: var(--paper);
+        box-shadow: 0 18px 48px rgba(23, 32, 51, 0.1);
+        animation: rise 0.35s ease;
+      }
+
+      #result[data-tier="established"] {
+        background: linear-gradient(180deg, #f3fbfa 0%, #ffffff 148px);
+      }
+
+      #result[data-tier="mixed"] {
+        background: linear-gradient(180deg, #fdf8ef 0%, #ffffff 148px);
+      }
+
+      #result[data-tier="limited_evidence"] {
+        background: linear-gradient(180deg, #f3f6fb 0%, #ffffff 148px);
       }
 
       .score-row {
         display: flex;
         justify-content: space-between;
         gap: 16px;
-        align-items: flex-end;
+        align-items: center;
+      }
+
+      .score-mark {
+        position: relative;
+        width: 148px;
+        height: 148px;
+      }
+
+      .ring {
+        width: 148px;
+        height: 148px;
+        transform: rotate(-90deg);
+      }
+
+      .ring-track,
+      .ring-value {
+        fill: none;
+        stroke-width: 10;
+      }
+
+      .ring-track {
+        stroke: #e4ebf3;
+      }
+
+      .ring-value {
+        stroke: var(--accent);
+        stroke-linecap: round;
+        stroke-dasharray: var(--ring);
+        stroke-dashoffset: var(--ring);
+        transition: stroke-dashoffset 0.7s ease;
+      }
+
+      #result[data-tier="established"] .ring-value {
+        stroke: var(--established);
+      }
+
+      #result[data-tier="mixed"] .ring-value {
+        stroke: #c9841a;
+      }
+
+      #result[data-tier="limited_evidence"] .ring-value {
+        stroke: var(--limited);
       }
 
       .score-number {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin: 0;
-        font-size: 4rem;
-        line-height: 0.9;
+        font-size: 2.6rem;
+        font-weight: 750;
+        line-height: 1;
         font-variant-numeric: tabular-nums;
         letter-spacing: -0.04em;
       }
 
+      .score-number.withheld {
+        font-size: 1.05rem;
+        letter-spacing: 0;
+        padding: 0 28px;
+        text-align: center;
+      }
+
       .score-caption {
-        margin: 6px 0 0;
+        margin: 4px 0 0;
         color: var(--muted);
         font-size: 0.85rem;
+        text-align: center;
+      }
+
+      .usage {
+        margin: 14px 0 0;
+        color: var(--ink);
+        font-size: 0.95rem;
+        font-weight: 650;
       }
 
       .tier {
         margin: 0;
-        padding: 6px 10px;
+        padding: 8px 14px;
         border-radius: 999px;
-        font-weight: 650;
-        font-size: 0.92rem;
+        font-weight: 750;
+        font-size: 0.95rem;
       }
 
       #result[data-tier="established"] .tier {
         color: var(--established);
-        background: #e5f4f3;
+        background: #d7f3ef;
       }
 
       #result[data-tier="mixed"] .tier {
         color: var(--mixed);
-        background: #f6edd9;
+        background: #f8e7c4;
       }
 
       #result[data-tier="limited_evidence"] .tier {
         color: var(--limited);
-        background: #e6ebf2;
+        background: #e1e8f2;
       }
 
       .repo-link {
@@ -224,22 +362,28 @@
       }
 
       .signal .direction {
-        min-width: 7.5rem;
-        text-align: right;
-        font-size: 0.85rem;
+        justify-self: end;
+        padding: 3px 8px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        white-space: nowrap;
       }
 
       .direction.up {
         color: var(--established);
+        background: #d7f3ef;
       }
 
       .direction.down {
         color: var(--down);
+        background: #f8e4e7;
       }
 
       .direction.neutral,
       .direction.unavailable {
         color: var(--unavailable);
+        background: #eef2f6;
       }
 
       .signal .note {
@@ -283,7 +427,34 @@
         margin-top: 8px;
       }
 
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #result,
+        .ring-value {
+          animation: none;
+          transition: none;
+        }
+      }
+
       @media (max-width: 640px) {
+        h1 {
+          font-size: 1.9rem;
+        }
+
+        .highlights {
+          grid-template-columns: 1fr;
+        }
+
         .entry {
           flex-direction: column;
         }
@@ -293,29 +464,32 @@
           align-items: flex-start;
         }
 
-        .score-number {
-          font-size: 3rem;
-        }
-
         .signal {
           grid-template-columns: 1fr auto;
         }
 
         .signal .direction {
           grid-column: 1 / -1;
-          text-align: left;
+          justify-self: start;
         }
       }
     </style>
   </head>
   <body>
     <main>
-      <p class="eyebrow">GitHub repository trust</p>
-      <h1>Score a public repository</h1>
-      <p class="lede">
-        Paste a GitHub URL to see a 0 to 100 trust score, a tier, and the signals behind them.
-        The score uses public metadata only. Repository files are not downloaded.
-      </p>
+      <header class="hero">
+        <p class="eyebrow">GitHub repository trust</p>
+        <h1>Score a public repository</h1>
+        <p class="lede">
+          Paste a GitHub URL to see a 0 to 100 trust score, a tier, and the signals behind them.
+          The score uses public metadata only. Repository files are not downloaded.
+        </p>
+        <ul class="highlights">
+          <li><strong>0 to 100</strong><span>One score, with the reason</span></li>
+          <li><strong>Three tiers</strong><span>Established, mixed, or limited</span></li>
+          <li><strong>Metadata only</strong><span>Repository files stay untouched</span></li>
+        </ul>
+      </header>
       <form id="score-form">
         <label for="repo-url">Repository URL</label>
         <div class="entry">
@@ -339,11 +513,18 @@
       <section id="result" hidden aria-live="polite">
         <div class="score-row">
           <div>
-            <p id="score-number" class="score-number"></p>
+            <div class="score-mark">
+              <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+                <circle id="score-ring" class="ring-value" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <p id="score-number" class="score-number"></p>
+            </div>
             <p id="score-caption" class="score-caption"></p>
           </div>
           <p id="tier" class="tier"></p>
         </div>
+        <p id="usage" class="usage"></p>
         <p class="summary">
           <a id="repo-link" class="repo-link" target="_blank" rel="noreferrer"></a>
         </p>
@@ -372,7 +553,10 @@
       const status = document.querySelector("#status");
       const result = document.querySelector("#result");
       const scoreNumber = document.querySelector("#score-number");
+      const scoreRing = document.querySelector("#score-ring");
+      const ringLength = 2 * Math.PI * 52;
       const scoreCaption = document.querySelector("#score-caption");
+      const usage = document.querySelector("#usage");
       const tier = document.querySelector("#tier");
       const repoLink = document.querySelector("#repo-link");
       const summary = document.querySelector("#summary");
@@ -457,7 +641,10 @@
         result.hidden = false;
         result.dataset.tier = payload.tier;
         scoreNumber.textContent = payload.score === null ? "Withheld" : String(payload.score);
+        scoreNumber.classList.toggle("withheld", payload.score === null);
+        paintRing(payload.score);
         scoreCaption.textContent = payload.score === null ? "Numeric score withheld" : "Trust score out of 100";
+        usage.textContent = payload.usage_summary || "";
         tier.textContent = payload.tier_label;
         const href = safeRepoUrl(payload.repo_url);
         repoLink.textContent = payload.full_name;
@@ -496,10 +683,23 @@
         disclaimer.textContent = payload.disclaimer;
       }
 
+      function paintRing(score) {
+        scoreRing.style.strokeDasharray = String(ringLength);
+        if (score === null) {
+          scoreRing.style.strokeDashoffset = String(ringLength);
+          return;
+        }
+        const filled = Math.max(0, Math.min(100, score)) / 100;
+        scoreRing.style.strokeDashoffset = String(ringLength * (1 - filled));
+      }
+
       async function saveFeedback(judgment) {
         if (!latest) {
           return;
         }
+        feedbackButtons.forEach((button) => {
+          button.classList.toggle("chosen", button.dataset.judgment === judgment);
+        });
         feedbackStatus.textContent = "Saving note...";
         try {
           const response = await fetch("/api/feedback", {

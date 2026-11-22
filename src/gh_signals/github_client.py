@@ -16,8 +16,7 @@ from pathlib import Path
 import subprocess
 import time
 from types import TracebackType
-from typing import Any
-from typing_extensions import Self
+from typing import Any, NamedTuple, Self
 
 import aiohttp
 
@@ -29,6 +28,15 @@ except ModuleNotFoundError:
 API_URL = "https://api.github.com"
 DEFAULT_CACHE_DIR = Path(__file__).parents[2] / ".cache" / "github"
 STAR_TIMESTAMP_ACCEPT = "application/vnd.github.star+json"
+
+
+class GitHubUsage(NamedTuple):
+    """How much of the hourly GitHub quota one client has spent."""
+
+    network_requests: int
+    cache_hits: int
+    remaining: int | None
+    limit: int | None
 
 
 class GitHubError(Exception):
@@ -70,8 +78,24 @@ class GitHubClient:
         self._max_concurrent = max_concurrent
         self._remaining = min_remaining + 1  # Unknown until the first response arrives.
         self._reset_at = 0.0  # Unix time when GitHub refills our hourly quota.
+        self._limit: int | None = None
+        self._quota_known = False
+        self._network_requests = 0
+        self._cache_hits = 0
         self._session: aiohttp.ClientSession | None = None
         self._semaphore: asyncio.Semaphore | None = None
+
+    def usage(self) -> GitHubUsage:
+        """Return requests spent, cache hits, and the hourly quota when GitHub has reported it.
+
+        Returns:
+            Counts since this client was created. ``remaining`` and ``limit`` stay ``None`` until a
+            live response includes GitHub's rate-limit headers. A fully cached score therefore
+            does not invent a remaining balance.
+        """
+        if not self._quota_known:
+            return GitHubUsage(self._network_requests, self._cache_hits, None, None)
+        return GitHubUsage(self._network_requests, self._cache_hits, self._remaining, self._limit)
 
     async def get_repo(self, repo: str) -> Repo:
         """Fetches the star and fork counts for a repository.
@@ -258,11 +282,11 @@ class GitHubClient:
                 await self._wait_for_quota()
                 try:
                     async with self._session.get(f"{API_URL}/{path}", headers=headers) as response:
-                        self._record_quota(response.headers)
+                        self._count_exchange(response.headers)
                         status = response.status
                         res_headers = response.headers
                         body = await response.text()
-                except (aiohttp.ClientError, asyncio.TimeoutError):
+                except (TimeoutError, aiohttp.ClientError):
                     # Network problem, wait a bit and try again (1s, 2s, 4s, ...).
                     if attempt == self._max_retries or not allow_retry:
                         raise
@@ -294,13 +318,22 @@ class GitHubClient:
 
         raise RuntimeError("unreachable")  # The loop always returns or raises before this.
 
+    def _count_exchange(self, headers: Mapping[str, str]) -> None:
+        """Count one completed GitHub response toward the quota for this client."""
+        self._network_requests += 1
+        self._record_quota(headers)
+
     def _record_quota(self, headers: Mapping[str, str]) -> None:
         """Stores how much of the hourly quota is left, per GitHub's response headers."""
         remaining = headers.get("x-ratelimit-remaining")
         reset_at = headers.get("x-ratelimit-reset")
+        limit = headers.get("x-ratelimit-limit")
         if remaining is not None and reset_at is not None:
             self._remaining = int(remaining)
             self._reset_at = float(reset_at)
+            self._quota_known = True
+        if limit is not None:
+            self._limit = int(limit)
 
     async def _wait_for_quota(self) -> None:
         """Sleeps until the quota resets if we are close to exhausting it.
@@ -332,9 +365,11 @@ class GitHubClient:
             return None
         try:
             with cache_path.open(encoding="utf-8") as file:
-                return json.load(file)
+                payload = json.load(file)
         except ValueError:
             return None  # Half-written or corrupt file, just fetch it again.
+        self._cache_hits += 1
+        return payload
 
     def _write_cache(self, path: str, payload: Any) -> None:
         cache_path = self._cache_path(path)
