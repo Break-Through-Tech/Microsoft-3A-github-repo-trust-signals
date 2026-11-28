@@ -1,0 +1,6 @@
+model,signals,cv_auc_mean,cv_auc_std,test_auc,precision,recall,f1,true_negatives,false_positives,false_negatives,true_positives
+Logistic regression (score signals),18,0.993,0.022,1.0,1.0,1.0,1.0,5,0,0,17
+Random forest (score signals),18,0.991,0.027,1.0,1.0,1.0,1.0,5,0,0,17
+Logistic regression (all signals),23,0.99,0.023,1.0,0.944,1.0,0.971,4,1,0,17
+Random forest (all signals),23,0.994,0.024,1.0,1.0,1.0,1.0,5,0,0,17
+Single signal: age_days,1,0.973,0.042,0.988,1.0,0.941,0.97,5,0,1,16

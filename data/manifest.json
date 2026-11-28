@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-14T01:20:43+00:00",
+  "as_of": "2026-11-08T23:48:57+00:00",
   "random_seed": 42,
   "test_size": 0.2,
   "top_n_contributors": 10,
@@ -45,12 +45,15 @@
     "peak_stars",
     "max_day_share",
     "active_day_ratio",
-    "burstiness"
+    "burstiness",
+    "owner_followers",
+    "owner_public_repos",
+    "is_archived"
   ],
   "missing_values": {},
   "label_files_sha256": {
     "good": "54a57cd678bcb66408f9480b538fbdaa9ec71321ee43de34e6231e9e8bba01fc",
     "uncertain": "6bdc8dc9e904ca2e629f08dc781d7cac605aefa667c825c88306f03a06f904d9"
   },
-  "features_sha256": "22d2015363fee85c5022f558241aa22daeaba088e45645abd52802fa630a90e2"
+  "features_sha256": "8dd77fef8be35e6c3753f982c5e0983c98fa1a25389e6bfd5d647db81f5e2604"
 }

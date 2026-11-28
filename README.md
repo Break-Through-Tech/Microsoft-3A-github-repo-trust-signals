@@ -63,6 +63,24 @@ Run tests:
 uv run pytest
 ```
 
+### Scoring a Repository
+
+`score_repo` in [src/gh_signals/score.py](src/gh_signals/score.py) is the single entry point for the trust score.
+It accepts `owner/name` or a GitHub URL and returns a `TrustResult` with the 0-100 score, tier, each model's score, every signal value, and warnings.
+
+```python
+from gh_signals.score import score_repo
+
+result = score_repo("microsoft/vscode")
+print(result.score, result.tier, result.missing_signals)
+print(result.model_dump_json(indent=2))
+```
+
+In a notebook, use `await score_repo_async("microsoft/vscode")`.
+API responses are cached in `.cache/github` for 24 hours, so repeat lookups make no requests.
+Signals that cannot be fetched are imputed and listed in `missing_signals`, and the tier falls back to `uncertain` when fewer than 80% of signals are available or the models disagree.
+A repo that does not exist or is private raises `RepoUnavailableError`.
+
 ### GitHub API Token
 
 This is optional but recommended. The [GitHub API client](src/gh_signals/github_client.py) can be provided authentication with your GitHub account for higher rate limits. There are a few options to do this:
